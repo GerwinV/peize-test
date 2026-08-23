@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V.V. Peize — Sportpark Peize</title>
+<link rel="icon" href="assets/logo_vvpeize.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   V.V. Peize — variant "binnen Sportlink Club.Website"
+   Alles hieronder is na te bouwen met de standaard instellingen
+   van het Sportlink/nxs-thema: boxed layout, 5 kleuren,
+   1 koppenlettertype, rijen met 1-4 kolommen + widgets.
+   ============================================================ */
+:root{
+  --navy:#14275e;          /* kleur 1: primair */
+  --navy-top:#25407f;      /* kleur 2: bovenkant balkgradient */
+  --gold:#f5c33b;          /* kleur 3: accent */
+  --gold-dark:#d9a516;
+  --page:#e9ebef;          /* kleur 4: pagina-achtergrond */
+  --line:#d4d8e0;          /* kleur 5: lijnen */
+  --ink:#22262e;
+  --body:#454b56;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--page);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;
+  line-height:1.55;
+  color:var(--body);
+}
+img{max-width:100%;display:block;}
+a{color:#1d3a86;text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* ---------- boxed layout: vaste kolom van 1140px ---------- */
+.page{
+  max-width:1140px;
+  margin:0 auto;
+  background:#fff;
+  box-shadow:0 0 6px rgba(0,0,0,.13);
+}
+.inner{padding:0 15px;}
+.row{display:flex;flex-wrap:wrap;margin:0 -8px;}
+.col{padding:0 8px;width:100%;}
+.col-8{width:66.6667%;}
+.col-4{width:33.3333%;}
+.col-6{width:50%;}
+
+/* ---------- 1. headerrij met logo + clubnaam ---------- */
+.topbar{
+  background:#fff;
+  border-bottom:3px solid var(--gold);
+}
+.topbar-in{
+  max-width:1140px;margin:0 auto;padding:14px 15px;
+  display:flex;align-items:center;gap:16px;
+}
+.topbar img{width:74px;height:74px;object-fit:contain;flex:none;}
+.brand-name{
+  font-family:'Oswald',Arial,sans-serif;
+  font-weight:700;
+  font-size:34px;
+  line-height:1.05;
+  color:var(--navy);
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  margin:0;
+}
+.brand-sub{
+  font-size:12.5px;color:#6a7180;margin:3px 0 0;
+  letter-spacing:.04em;
+}
+.topbar-right{
+  margin-left:auto;text-align:right;font-size:12px;color:#6a7180;line-height:1.5;
+}
+.topbar-right strong{color:var(--navy);font-size:12.5px;}
+
+/* ---------- 2. navy menubalk ---------- */
+.nav{
+  background:linear-gradient(180deg,var(--navy-top) 0%,var(--navy) 55%,#0f1f4d 100%);
+  border-bottom:1px solid #0b1738;
+}
+.nav-in{max-width:1140px;margin:0 auto;padding:0 15px;display:flex;align-items:stretch;}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;width:100%;}
+.nav li{display:block;}
+.nav li.spacer{margin-left:auto;}
+.nav a{
+  display:block;
+  font-family:'Oswald',Arial,sans-serif;
+  font-weight:500;
+  font-size:14px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:#fff;
+  padding:13px 16px;
+  border-right:1px solid rgba(255,255,255,.12);
+  text-decoration:none;
+}
+.nav li:first-child a{border-left:1px solid rgba(255,255,255,.12);}
+.nav a:hover{background:rgba(255,255,255,.11);text-decoration:none;}
+.nav a.active{background:rgba(0,0,0,.28);color:var(--gold);}
+.nav a.cta{
+  background:var(--gold);color:#20304f;font-weight:700;
+  border-right:none;
+}
+.nav a.cta:hover{background:#ffd45c;}
+.hamburger{
+  display:none;background:none;border:0;color:#fff;
+  font-size:15px;font-family:'Oswald',Arial,sans-serif;letter-spacing:.08em;
+  text-transform:uppercase;padding:12px 15px;cursor:pointer;align-items:center;gap:9px;
+  width:100%;text-align:left;
+}
+.hamburger .bars{display:inline-block;width:18px;}
+.hamburger .bars i{display:block;height:2px;background:#fff;margin:3px 0;}
+
+/* ---------- 3. fotoslider (boxed, alleen foto's) ---------- */
+.slider{
+  position:relative;
+  margin:15px 0 0;
+  background:#0d1a40;
+  overflow:hidden;
+  border:1px solid var(--line);
+}
+.slides{position:relative;padding-top:34.5%;}
+.slides figure{
+  position:absolute;inset:0;margin:0;opacity:0;transition:opacity .5s ease;
+}
+.slides figure.on{opacity:1;}
+.slides img{width:100%;height:100%;object-fit:cover;}
+.sl-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:34px;height:44px;border:0;cursor:pointer;
+  background:rgba(20,39,94,.62);color:#fff;font-size:20px;line-height:1;
+  font-family:Arial,sans-serif;
+}
+.sl-arrow:hover{background:rgba(20,39,94,.9);}
+.sl-prev{left:0;}
+.sl-next{right:0;}
+.dots{
+  position:absolute;left:0;right:0;bottom:9px;text-align:center;
+}
+.dots button{
+  width:10px;height:10px;padding:0;margin:0 4px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.85);background:rgba(0,0,0,.28);cursor:pointer;
+}
+.dots button.on{background:var(--gold);border-color:var(--gold);}
+
+/* ---------- widgets ---------- */
+.widget{
+  background:#fff;
+  border:1px solid var(--line);
+  margin:15px 0 0;
+}
+.widget-head{
+  background:linear-gradient(180deg,var(--navy-top) 0%,var(--navy) 60%,#101f4e 100%);
+  border-bottom:2px solid var(--gold);
+  padding:8px 10px;
+  display:flex;align-items:center;gap:8px;
+}
+.widget-head svg{width:15px;height:15px;fill:var(--gold);flex:none;}
+.widget-head h2{
+  font-family:'Oswald',Arial,sans-serif;
+  font-weight:600;font-size:15px;letter-spacing:.07em;text-transform:uppercase;
+  color:#fff;margin:0;flex:1;
+}
+.widget-head .h-note{
+  font-family:Arial,sans-serif;font-size:11px;letter-spacing:0;text-transform:none;
+  color:rgba(255,255,255,.72);font-weight:normal;
+}
+.widget-body{padding:10px;}
+.widget-body.flush{padding:0;}
+.widget-foot{
+  border-top:1px solid var(--line);
+  padding:8px 10px;
+  background:#f7f8fa;
+}
+
+/* ---------- tabellen ---------- */
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{
+  background:#eef0f4;color:var(--navy);
+  font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);font-weight:bold;
+}
+td{padding:6px 8px;border-bottom:1px solid #eceef2;vertical-align:middle;}
+tbody tr:nth-child(odd){background:#f7f8fa;}
+tbody tr:hover{background:#eef1f7;}
+tr.peize td{background:#fdf6e0;}
+tr.peize:hover td{background:#faeec9;}
+.b{font-weight:bold;color:var(--ink);}
+.daybar td{
+  background:var(--navy)!important;color:#fff;font-weight:bold;
+  font-family:'Oswald',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;
+  font-size:12px;padding:4px 8px;
+}
+.t-time{width:52px;color:#6a7180;white-space:nowrap;}
+.t-comp{width:96px;color:#8a90a0;font-size:11.5px;}
+.num{text-align:center;width:34px;}
+.num-w{text-align:center;width:44px;}
+
+/* ---------- knoppen ---------- */
+.btn{
+  display:inline-block;
+  font-family:'Oswald',Arial,sans-serif;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;
+  padding:8px 14px;border-radius:2px;border:1px solid var(--navy);
+  background:var(--navy);color:#fff;text-decoration:none;cursor:pointer;
+}
+.btn:hover{background:#1b3474;text-decoration:none;color:#fff;}
+.btn-gold{background:var(--gold);border-color:var(--gold-dark);color:#20304f;font-weight:600;}
+.btn-gold:hover{background:#ffd45c;color:#20304f;}
+.btn-block{display:block;text-align:center;}
+
+/* ---------- afgelastingen ---------- */
+.status-ok{
+  display:flex;align-items:center;gap:9px;
+  background:#eef7ec;border:1px solid #cfe4c9;border-radius:2px;
+  padding:9px 10px;
+}
+.status-ok svg{width:20px;height:20px;fill:#2f7d32;flex:none;}
+.status-ok strong{color:#2f6d33;font-size:13.5px;display:block;}
+.status-ok span{font-size:12px;color:#6a7180;}
+
+/* ---------- lid worden ---------- */
+.member{text-align:center;}
+.member img{width:78px;height:78px;object-fit:contain;margin:2px auto 8px;}
+.member p{margin:0 0 10px;font-size:13px;}
+
+/* ---------- nieuws ---------- */
+.news{list-style:none;margin:0;padding:0;}
+.news li{display:flex;gap:10px;padding:10px;border-bottom:1px solid #eceef2;}
+.news li:last-child{border-bottom:0;}
+.news li:nth-child(even){background:#f7f8fa;}
+.news .thumb{
+  width:104px;height:70px;flex:none;overflow:hidden;
+  border:1px solid var(--line);background:#fff;
+}
+.news .thumb img{width:100%;height:100%;object-fit:cover;}
+.news .thumb.logo img{object-fit:contain;padding:4px;background:#fff;}
+.news h3{
+  font-family:'Oswald',Arial,sans-serif;font-weight:500;font-size:15px;
+  margin:0 0 3px;line-height:1.25;color:var(--navy);
+}
+.news h3 a{color:var(--navy);}
+.news .date{font-size:11px;color:#8a90a0;text-transform:uppercase;letter-spacing:.05em;}
+.news p{margin:4px 0 0;font-size:12.5px;color:#5c6371;}
+
+/* ---------- sponsors ---------- */
+.sponsors{display:flex;flex-wrap:wrap;margin:0 -5px;}
+.sponsors div{width:25%;padding:5px;}
+.sponsors a{
+  display:flex;align-items:center;justify-content:center;
+  height:92px;border:1px solid var(--line);background:#fff;padding:10px;
+}
+.sponsors img{max-height:100%;width:auto;object-fit:contain;}
+
+/* ---------- footer ---------- */
+.foot{
+  background:linear-gradient(180deg,var(--navy-top) 0%,var(--navy) 45%,#0d1a40 100%);
+  color:#c8cee0;margin-top:15px;border-top:3px solid var(--gold);
+}
+.foot-in{max-width:1140px;margin:0 auto;padding:20px 15px;display:flex;flex-wrap:wrap;gap:20px;}
+.foot h4{
+  font-family:'Oswald',Arial,sans-serif;font-weight:600;font-size:14px;
+  letter-spacing:.08em;text-transform:uppercase;color:#fff;margin:0 0 7px;
+}
+.foot-col{flex:1 1 220px;font-size:13px;line-height:1.7;}
+.foot a{color:#e2e7f3;}
+.social{display:flex;gap:7px;margin-top:2px;}
+.social a{
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.12);border-radius:2px;
+}
+.social a:hover{background:var(--gold);}
+.social svg{width:16px;height:16px;fill:#fff;}
+.social a:hover svg{fill:#14275e;}
+.foot-bottom{
+  border-top:1px solid rgba(255,255,255,.15);
+  font-size:11.5px;color:#9aa4be;
+}
+.foot-bottom div{max-width:1140px;margin:0 auto;padding:9px 15px;
+  display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:space-between;}
+
+.note{font-size:11px;color:#8a90a0;padding:6px 10px;}
+.spacer-b{height:15px;}
+
+/* ---------- responsive: kolommen stapelen ---------- */
+@media (max-width:767px){
+  .col-8,.col-4,.col-6{width:100%;}
+  .topbar-in{gap:12px;}
+  .topbar img{width:56px;height:56px;}
+  .brand-name{font-size:24px;}
+  .brand-sub{font-size:11.5px;}
+  .topbar-right{display:none;}
+  .nav-in{padding:0;display:block;}
+  .hamburger{display:flex;}
+  .nav ul{display:none;flex-direction:column;border-top:1px solid rgba(255,255,255,.15);}
+  .nav ul.open{display:flex;}
+  .nav a,.nav li:first-child a{
+    border-right:0;border-left:0;border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  .nav li.spacer{margin-left:0;}
+  .slides{padding-top:56%;}
+  .sponsors div{width:50%;}
+  .news .thumb{width:78px;height:60px;}
+  .t-comp{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ============ 1. HEADERRIJ (logo + clubnaam) ============ -->
+  <header class="topbar">
+    <div class="topbar-in">
+      <img src="assets/logo_vvpeize.png" alt="Logo V.V. Peize">
+      <div>
+        <p class="brand-name">V.V. Peize</p>
+        <p class="brand-sub">Sportpark Peize &middot; opgericht 1931</p>
+      </div>
+      <div class="topbar-right">
+        <strong>Hereweg 1b, 9321 CL Peize</strong><br>
+        Kantine 050 - 503 28 86
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ 2. MENUBALK ============ -->
+  <nav class="nav">
+    <div class="nav-in">
+      <button class="hamburger" id="hamburger" aria-expanded="false" aria-controls="menu">
+        <span class="bars"><i></i><i></i><i></i></span> Menu
+      </button>
+      <ul id="menu">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Clubinfo</a></li>
+        <li><a href="#">Teams</a></li>
+        <li><a href="#">Toernooien</a></li>
+        <li><a href="#">Activiteiten</a></li>
+        <li><a href="#">Vacatures</a></li>
+        <li class="spacer"><a href="#" class="cta">Lid worden</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="inner">
+
+    <!-- ============ 3. FOTOSLIDER ============ -->
+    <div class="slider" id="slider">
+      <div class="slides" id="slides">
+        <figure class="on"><img src="assets/veld3.jpg" alt="Sportpark V.V. Peize"></figure>
+        <figure><img src="assets/veld2.jpg" alt="Voetbalveld V.V. Peize"></figure>
+        <figure><img src="assets/veld1.jpg" alt="Hoofdveld V.V. Peize"></figure>
+      </div>
+      <button class="sl-arrow sl-prev" id="slPrev" aria-label="Vorige foto">&#10094;</button>
+      <button class="sl-arrow sl-next" id="slNext" aria-label="Volgende foto">&#10095;</button>
+      <div class="dots" id="dots"></div>
+    </div>
+
+    <!-- ============ 4. RIJ: PROGRAMMA + AFGELASTINGEN/LID WORDEN ============ -->
+    <div class="row">
+      <div class="col col-8">
+        <section class="widget">
+          <div class="widget-head">
+            <svg viewBox="0 0 24 24"><path d="M7 2v2H4a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-3V2h-2v2H9V2H7zm12 7v10H5V9h14z"/></svg>
+            <h2>Programma</h2>
+            <span class="h-note">weekend 29 &amp; 30 augustus</span>
+          </div>
+          <div class="widget-body flush">
+            <table>
+              <thead>
+                <tr>
+                  <th class="t-time">Tijd</th>
+                  <th>Wedstrijd</th>
+                  <th class="t-comp">Competitie</th>
+                  <th style="width:96px;">Accommodatie</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="daybar"><td colspan="4">Zaterdag 29 augustus</td></tr>
+                <tr class="peize">
+                  <td class="t-time">12:00</td>
+                  <td>V.V. Westerkwartier 3 &ndash; <span class="b">Peize 4</span></td>
+                  <td class="t-comp">4e klasse</td>
+                  <td>Uit</td>
+                </tr>
+                <tr class="peize">
+                  <td class="t-time">12:30</td>
+                  <td><span class="b">Peize 3</span> &ndash; Roden 3</td>
+                  <td class="t-comp">3e klasse</td>
+                  <td>Veld 2</td>
+                </tr>
+                <tr class="peize">
+                  <td class="t-time">14:30</td>
+                  <td><span class="b">Peize 2</span> &ndash; Marum 4</td>
+                  <td class="t-comp">2e klasse</td>
+                  <td>Veld 1</td>
+                </tr>
+                <tr class="peize">
+                  <td class="t-time">14:30</td>
+                  <td>Blue Boys VR1 &ndash; <span class="b">Peize VR1</span></td>
+                  <td class="t-comp">4e klasse</td>
+                  <td>Uit</td>
+                </tr>
+                <tr class="daybar"><td colspan="4">Zondag 30 augustus</td></tr>
+                <tr class="peize">
+                  <td class="t-time">11:00</td>
+                  <td>Gomos 3 &ndash; <span class="b">Peize 3</span></td>
+                  <td class="t-comp">Beker</td>
+                  <td>Uit</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="widget-foot">
+            <a href="#" class="btn">Meer wedstrijden</a>
+          </div>
+        </section>
+      </div>
+
+      <div class="col col-4">
+        <section class="widget">
+          <div class="widget-head">
+            <svg viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2zm1 14h-2v2h2v-2zm0-7h-2v5h2V9z"/></svg>
+            <h2>Afgelastingen</h2>
+          </div>
+          <div class="widget-body">
+            <div class="status-ok">
+              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.4-4.2-4.2 1.5-1.5 2.7 2.7 5.7-5.7 1.5 1.5-7.2 7.2z"/></svg>
+              <div>
+                <strong>Geen afgelastingen</strong>
+                <span>Alle wedstrijden gaan door</span>
+              </div>
+            </div>
+            <p class="note" style="padding:8px 0 0;">Bijgewerkt: vrijdag 28 augustus, 19:10 uur</p>
+          </div>
+        </section>
+
+        <section class="widget">
+          <div class="widget-head">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <h2>Lid worden</h2>
+          </div>
+          <div class="widget-body member">
+            <img src="assets/logo_vvpeize.png" alt="Logo V.V. Peize">
+            <p>Voetballen bij V.V. Peize? Van de allerjongste Kabouters tot het 45+&nbsp;team &mdash; iedereen is welkom op Sportpark Peize.</p>
+            <a href="#" class="btn btn-gold btn-block">Word lid van V.V. Peize</a>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ============ 5. RIJ: UITSLAGEN + STAND ============ -->
+    <div class="row">
+      <div class="col col-6">
+        <section class="widget">
+          <div class="widget-head">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2.2 3.6 2.6-1.4 4.2H9.8L8.4 6.8 12 4.2zM4.6 12.3l1.4-4.2 3.5 2.5 1.4 4.2-3.6 2.6a8 8 0 0 1-2.7-5.1zm7.4 7.5a8 8 0 0 1-3.3-.7l1.3-4h4l1.3 4a8 8 0 0 1-3.3.7zm5.7-2.4-3.6-2.6 1.4-4.2 3.5-2.5 1.4 4.2a8 8 0 0 1-2.7 5.1z"/></svg>
+            <h2>Uitslagen</h2>
+            <span class="h-note">22 &amp; 23 augustus</span>
+          </div>
+          <div class="widget-body flush">
+            <table>
+              <tbody>
+                <tr class="peize">
+                  <td><span class="b">Peize 1</span> &ndash; Roden 1</td>
+                  <td class="num-w b">2 - 1</td>
+                </tr>
+                <tr class="peize">
+                  <td>GOMOS 2 &ndash; <span class="b">Peize 2</span></td>
+                  <td class="num-w b">1 - 1</td>
+                </tr>
+                <tr class="peize">
+                  <td><span class="b">Peize 3</span> &ndash; VAKO 4</td>
+                  <td class="num-w b">3 - 0</td>
+                </tr>
+                <tr class="peize">
+                  <td>Actief 3 &ndash; <span class="b">Peize 4</span></td>
+                  <td class="num-w b">4 - 2</td>
+                </tr>
+                <tr class="peize">
+                  <td><span class="b">Peize VR1</span> &ndash; Haulerwijk VR1</td>
+                  <td class="num-w b">2 - 2</td>
+                </tr>
+                <tr>
+                  <td>Marum 4 &ndash; Nieuw Roden 3</td>
+                  <td class="num-w b">0 - 3</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="note">Voorbeelddata &mdash; wordt in de praktijk automatisch uit Sportlink gevuld.</p>
+          </div>
+          <div class="widget-foot">
+            <a href="#" class="btn">Meer uitslagen</a>
+          </div>
+        </section>
+      </div>
+
+      <div class="col col-6">
+        <section class="widget">
+          <div class="widget-head">
+            <svg viewBox="0 0 24 24"><path d="M3 21h5V10H3v11zm6.5 0h5V3h-5v18zM16 21h5v-7h-5v7z"/></svg>
+            <h2>Stand</h2>
+            <span class="h-note">4e klasse B</span>
+          </div>
+          <div class="widget-body flush">
+            <table>
+              <thead>
+                <tr>
+                  <th class="num">#</th>
+                  <th>Club</th>
+                  <th class="num">G</th>
+                  <th class="num">W</th>
+                  <th class="num">DS</th>
+                  <th class="num">P</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="num">1</td><td>Roden</td><td class="num">4</td><td class="num">3</td><td class="num">+6</td><td class="num b">10</td></tr>
+                <tr class="peize"><td class="num">2</td><td class="b">Peize</td><td class="num">4</td><td class="num">3</td><td class="num">+4</td><td class="num b">9</td></tr>
+                <tr><td class="num">3</td><td>GOMOS</td><td class="num">4</td><td class="num">2</td><td class="num">+3</td><td class="num b">8</td></tr>
+                <tr><td class="num">4</td><td>VAKO</td><td class="num">4</td><td class="num">2</td><td class="num">+1</td><td class="num b">7</td></tr>
+                <tr><td class="num">5</td><td>Marum</td><td class="num">4</td><td class="num">1</td><td class="num">&minus;1</td><td class="num b">5</td></tr>
+                <tr><td class="num">6</td><td>Actief</td><td class="num">4</td><td class="num">1</td><td class="num">&minus;4</td><td class="num b">4</td></tr>
+                <tr><td class="num">7</td><td>Haulerwijk</td><td class="num">4</td><td class="num">0</td><td class="num">&minus;9</td><td class="num b">1</td></tr>
+              </tbody>
+            </table>
+            <p class="note">Voorbeelddata &mdash; wordt in de praktijk automatisch uit Sportlink gevuld.</p>
+          </div>
+          <div class="widget-foot">
+            <a href="#" class="btn">Volledige stand</a>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ============ 6. NIEUWS ============ -->
+    <section class="widget">
+      <div class="widget-head">
+        <svg viewBox="0 0 24 24"><path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM11 9H5V6h6v3zm8 9H5v-2h14v2zm0-4H5v-2h14v2zm0-5h-6V6h6v3z"/></svg>
+        <h2>Club Nieuws</h2>
+      </div>
+      <div class="widget-body flush">
+        <ul class="news">
+          <li>
+            <div class="thumb"><img src="assets/veld1.jpg" alt=""></div>
+            <div>
+              <h3><a href="#">ALV donderdag 24 september, Sporthuis Peize, 21u</a></h3>
+              <span class="date">14 augustus 2026</span>
+              <p>Noteer alvast in de agenda: de algemene ledenvergadering is dit jaar op donderdag 24 september om 21.00 uur in het Sporthuis.</p>
+            </div>
+          </li>
+          <li>
+            <div class="thumb"><img src="assets/veld2.jpg" alt=""></div>
+            <div>
+              <h3><a href="#">Einde vakantie: de velden, weer voetballen, vacatures en ALV</a></h3>
+              <span class="date">14 augustus 2026</span>
+              <p>De velden zijn klaar, de trainingen starten weer en er staan nog een paar vrijwilligersvacatures open. Alles op een rij.</p>
+            </div>
+          </li>
+          <li>
+            <div class="thumb logo"><img src="assets/logo_vvpeize.png" alt=""></div>
+            <div>
+              <h3><a href="#">Piet Fransen Techniekschool</a></h3>
+              <span class="date">25 juli 2026</span>
+              <p>Ook dit seizoen kunnen onze jeugdspelers weer extra aan hun techniek werken bij de Piet Fransen Techniekschool.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="widget-foot">
+        <a href="#" class="btn">Meer nieuws</a>
+      </div>
+    </section>
+
+    <!-- ============ 7. SPONSORS ============ -->
+    <section class="widget">
+      <div class="widget-head">
+        <svg viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z"/></svg>
+        <h2>Onze sponsors</h2>
+        <span class="h-note">Bedankt voor de steun!</span>
+      </div>
+      <div class="widget-body">
+        <div class="sponsors">
+          <div><a href="#"><img src="assets/sponsor_unipe.png" alt="Unipe"></a></div>
+          <div><a href="#"><img src="assets/sponsor_plus.png" alt="PLUS"></a></div>
+          <div><a href="#"><img src="assets/sponsor_bakker.png" alt="Bakker"></a></div>
+          <div><a href="#"><img src="assets/sponsor_boon.png" alt="Boon"></a></div>
+        </div>
+      </div>
+      <div class="widget-foot">
+        <a href="#" class="btn">Sponsor worden</a>
+      </div>
+    </section>
+
+    <div class="spacer-b"></div>
+  </div>
+
+  <!-- ============ 8. FOOTER ============ -->
+  <footer class="foot">
+    <div class="foot-in">
+      <div class="foot-col">
+        <h4>V.V. Peize</h4>
+        Sportpark V.V. Peize<br>
+        Hereweg 1b<br>
+        9321 CL Peize<br>
+        Tel: 050 5032886 (kantine)
+      </div>
+      <div class="foot-col">
+        <h4>Snel naar</h4>
+        <a href="#">Clubinfo</a> &middot; <a href="#">Teams</a><br>
+        <a href="#">Toernooien</a> &middot; <a href="#">Activiteiten</a><br>
+        <a href="#">Vacatures</a> &middot; <a href="#">Contact</a><br>
+        <a href="#">Lid worden</a>
+      </div>
+      <div class="foot-col">
+        <h4>Volg ons</h4>
+        <div class="social">
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9a3.7 3.7 0 0 1-.9-1.4c-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.8-.1zm0 3.2A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4zm0 10.9A4.3 4.3 0 1 1 16.3 12 4.3 4.3 0 0 1 12 16.3zM18.9 4a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 18.9 4z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.7-1.7C19.3 5.2 12 5.2 12 5.2s-7.3 0-8.9.4A2.5 2.5 0 0 0 1.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 0 0 1.7 1.7c1.6.4 8.9.4 8.9.4s7.3 0 8.9-.4a2.5 2.5 0 0 0 1.7-1.7C23 15.2 23 12 23 12zM9.7 15.1V8.9l6.1 3.1-6.1 3.1z"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M17.5 3h3.2l-7 8 8.2 10h-6.4l-5-6.1L4.7 21H1.5l7.5-8.6L1.2 3h6.6l4.5 5.6L17.5 3zm-1.1 16.1h1.8L7.7 4.8H5.8l10.6 14.3z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>
+        <span>&copy; 2026 V.V. Peize &middot; Sportpark Peize, opgericht 1931</span>
+        <span><a href="#">Sportlink Services</a> | <a href="#">Login</a></span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  /* --- hamburgermenu (mobiel) --- */
+  var hb = document.getElementById('hamburger');
+  var menu = document.getElementById('menu');
+  hb.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    hb.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  /* --- fotoslider --- */
+  var figs = document.querySelectorAll('#slides figure');
+  var dotWrap = document.getElementById('dots');
+  var i = 0, timer;
+
+  for (var n = 0; n < figs.length; n++){
+    var b = document.createElement('button');
+    b.setAttribute('aria-label', 'Foto ' + (n+1));
+    if (n === 0) b.className = 'on';
+    b.dataset.i = n;
+    dotWrap.appendChild(b);
+  }
+  var dots = dotWrap.querySelectorAll('button');
+
+  function show(k){
+    i = (k + figs.length) % figs.length;
+    for (var n = 0; n < figs.length; n++){
+      figs[n].classList.toggle('on', n === i);
+      dots[n].classList.toggle('on', n === i);
+    }
+  }
+  function auto(){ clearInterval(timer); timer = setInterval(function(){ show(i+1); }, 5000); }
+
+  dotWrap.addEventListener('click', function(e){
+    if (e.target.dataset.i !== undefined){ show(parseInt(e.target.dataset.i,10)); auto(); }
+  });
+  document.getElementById('slPrev').addEventListener('click', function(){ show(i-1); auto(); });
+  document.getElementById('slNext').addEventListener('click', function(){ show(i+1); auto(); });
+  auto();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V.V. Peize — Voetbalvereniging Peize</title>
+<link rel="icon" href="assets/logo_vvpeize.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#14275e;
+  --navy-700:#1c3475;
+  --navy-900:#0d1a40;
+  --gold:#f5c33b;
+  --gold-dark:#e0ac1c;
+  --ink:#161b26;
+  --body:#4a5468;
+  --line:#e3e7ef;
+  --bg:#f5f7fb;
+  --white:#ffffff;
+  --radius:14px;
+  --shadow:0 2px 4px rgba(13,26,64,.05), 0 12px 30px rgba(13,26,64,.07);
+  --maxw:1200px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  font-family:'Barlow','Helvetica Neue',Arial,sans-serif;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--body);
+  background:var(--white);
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+h1,h2,h3,h4,.display{
+  font-family:'Barlow Condensed','Barlow',Arial,sans-serif;
+  color:var(--navy);
+  margin:0;
+  line-height:1.06;
+  letter-spacing:.005em;
+  font-weight:700;
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+.eyebrow{
+  font-family:'Barlow Condensed','Barlow',Arial,sans-serif;
+  font-weight:700;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold-dark);margin:0 0 10px;
+}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:34px;}
+.sec-head h2{font-size:clamp(32px,4.2vw,46px);text-transform:uppercase;}
+.sec-head p{margin:8px 0 0;max-width:56ch;font-size:16.5px;}
+.link-more{
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:18px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--navy);
+  border-bottom:2px solid var(--gold);padding-bottom:3px;white-space:nowrap;
+  transition:color .18s ease,border-color .18s ease;
+}
+.link-more:hover{color:var(--gold-dark);border-color:var(--navy);}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;
+  font-size:19px;letter-spacing:.09em;text-transform:uppercase;
+  padding:14px 28px;border-radius:8px;border:2px solid transparent;cursor:pointer;
+  transition:transform .15s ease, background .18s ease, color .18s ease, border-color .18s ease;
+}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:#ffd558;transform:translateY(-2px);}
+.btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.75);}
+.btn-outline:hover{background:#fff;color:var(--navy);border-color:#fff;transform:translateY(-2px);}
+.btn-navy{background:var(--navy);color:#fff;}
+.btn-navy:hover{background:var(--navy-700);transform:translateY(-2px);}
+
+/* ---------- header ---------- */
+.site-header{
+  position:sticky;top:0;z-index:60;background:#fff;
+  border-bottom:1px solid var(--line);
+  box-shadow:0 1px 0 rgba(13,26,64,.04);
+}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;height:78px;}
+.brand{display:flex;align-items:center;gap:13px;}
+.brand img{width:48px;height:48px;object-fit:contain;flex:none;}
+.brand-txt{display:flex;flex-direction:column;line-height:1;}
+.brand-name{
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:27px;
+  color:var(--navy);text-transform:uppercase;letter-spacing:.02em;
+}
+.brand-sub{font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:#8590a6;font-weight:600;margin-top:3px;}
+.nav{display:flex;align-items:center;gap:4px;}
+.nav a{
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:19px;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--navy);
+  padding:9px 13px;border-radius:7px;position:relative;transition:color .18s ease,background .18s ease;
+}
+.nav a:hover{background:#f0f3fa;}
+.nav a.active::after{
+  content:"";position:absolute;left:13px;right:13px;bottom:2px;height:3px;background:var(--gold);border-radius:2px;
+}
+.nav .btn{margin-left:12px;padding:12px 22px;font-size:18px;}
+.burger{
+  display:none;width:46px;height:46px;border:1px solid var(--line);background:#fff;border-radius:9px;
+  align-items:center;justify-content:center;cursor:pointer;padding:0;
+}
+.burger span{display:block;width:21px;height:2px;background:var(--navy);position:relative;transition:.2s;}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:21px;height:2px;background:var(--navy);transition:.2s;}
+.burger span::before{top:-7px;}
+.burger span::after{top:7px;}
+.burger.open span{background:transparent;}
+.burger.open span::before{top:0;transform:rotate(45deg);}
+.burger.open span::after{top:0;transform:rotate(-45deg);}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:640px;display:flex;align-items:flex-end;overflow:hidden;}
+.hero-img{position:absolute;inset:0;}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:50% 42%;}
+.hero-img::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(100deg, rgba(13,26,64,.94) 0%, rgba(13,26,64,.80) 38%, rgba(20,39,94,.42) 66%, rgba(20,39,94,.28) 100%),
+    linear-gradient(to top, rgba(13,26,64,.85) 0%, rgba(13,26,64,0) 55%);
+}
+.hero-inner{position:relative;z-index:2;width:100%;padding:110px 24px 64px;}
+.hero-content{max-width:730px;}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:7px 16px 7px 12px;
+  font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;margin-bottom:22px;
+}
+.hero-tag .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none;}
+.hero h1{color:#fff;font-size:clamp(30px,6.2vw,74px);text-transform:uppercase;letter-spacing:.004em;}
+.hero h1 em{font-style:normal;color:var(--gold);display:block;}
+.hero p.lead{color:rgba(255,255,255,.86);font-size:19px;max-width:56ch;margin:22px 0 32px;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
+.hero-facts{
+  display:flex;gap:38px;flex-wrap:wrap;margin-top:46px;padding-top:26px;
+  border-top:1px solid rgba(255,255,255,.18);
+}
+.hero-facts div{color:#fff;}
+.hero-facts b{
+  display:block;font-family:'Barlow Condensed',Arial,sans-serif;font-size:34px;font-weight:700;
+  color:var(--gold);line-height:1;
+}
+.hero-facts span{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);font-weight:600;}
+
+/* ---------- status bar ---------- */
+.statusbar{background:var(--navy-900);color:#fff;}
+.statusbar .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-top:15px;padding-bottom:15px;}
+.status-pill{
+  display:inline-flex;align-items:center;gap:9px;background:rgba(63,201,124,.16);
+  border:1px solid rgba(63,201,124,.45);color:#8fe8b4;border-radius:100px;padding:5px 15px;
+  font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+}
+.status-pill .dot{width:9px;height:9px;border-radius:50%;background:#4ad07f;flex:none;}
+.statusbar p{margin:0;font-size:15px;color:rgba(255,255,255,.72);}
+.statusbar .sep{margin-left:auto;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600;}
+
+/* ---------- matches ---------- */
+.matches{background:var(--bg);padding:82px 0 90px;}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:start;}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;height:100%;
+}
+.card-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--navy);color:#fff;padding:16px 22px;
+}
+.card-head h3{color:#fff;font-size:24px;text-transform:uppercase;letter-spacing:.05em;}
+.card-head .badge{
+  font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  background:rgba(255,255,255,.14);border-radius:5px;padding:4px 9px;color:rgba(255,255,255,.85);white-space:nowrap;
+}
+.card-head .badge.gold{background:var(--gold);color:var(--navy);}
+.card-body{padding:6px 0 0;flex:1;}
+.daylabel{
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:15px;letter-spacing:.15em;
+  text-transform:uppercase;color:#8590a6;background:#f7f9fc;
+  padding:9px 22px;border-bottom:1px solid var(--line);border-top:1px solid var(--line);
+}
+.card-body .daylabel:first-child{border-top:none;}
+.row{
+  display:flex;align-items:center;gap:14px;padding:13px 22px;border-bottom:1px solid #eef1f7;
+  transition:background .15s ease;
+}
+.row:hover{background:#fafbfe;}
+.row .time{
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:19px;color:var(--navy);
+  min-width:48px;flex:none;
+}
+.row .teams{font-size:15.5px;color:var(--ink);line-height:1.4;flex:1;min-width:0;}
+.row .teams .vs{color:#a3abbd;padding:0 3px;}
+.row .score{
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:18px;color:#fff;
+  background:var(--navy);border-radius:6px;padding:3px 11px;flex:none;letter-spacing:.03em;
+}
+.row.win .score{background:#1f7a4d;}
+.row.loss .score{background:#9aa3b5;}
+.row.peize{background:#fffaeb;}
+.row.peize:hover{background:#fff5db;}
+.row.peize .teams strong{color:var(--navy);font-weight:700;}
+.card-foot{
+  padding:15px 22px;border-top:1px solid var(--line);background:#fbfcfe;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.card-foot a{
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:16px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--navy);
+}
+.card-foot a:hover{color:var(--gold-dark);}
+.card-foot small{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:#a3abbd;font-weight:600;}
+table.stand{width:100%;border-collapse:collapse;font-size:15.5px;}
+table.stand th{
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:13px;letter-spacing:.13em;
+  text-transform:uppercase;color:#8590a6;text-align:left;padding:10px 8px;
+  background:#f7f9fc;border-bottom:1px solid var(--line);
+}
+table.stand td{padding:10.5px 8px;border-bottom:1px solid #eef1f7;color:var(--ink);}
+table.stand th:first-child,table.stand td:first-child{padding-left:22px;width:34px;color:#a3abbd;}
+table.stand th:last-child,table.stand td:last-child{padding-right:22px;}
+table.stand td.num,table.stand th.num{text-align:center;width:46px;}
+table.stand td.pts{font-weight:700;color:var(--navy);text-align:center;width:52px;}
+table.stand tr.peize td{background:#fffaeb;font-weight:600;}
+table.stand tr.peize td.club{color:var(--navy);}
+table.stand tr.peize td:first-child{box-shadow:inset 3px 0 0 var(--gold);color:var(--gold-dark);font-weight:700;}
+
+/* ---------- news ---------- */
+.news{padding:86px 0 94px;background:#fff;}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.news-card{
+  display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.news-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(13,26,64,.13);}
+.news-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--navy);}
+.news-media img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.news-card:hover .news-media img{transform:scale(1.045);}
+.news-media.crest{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#f2f5fc 0%,#e6ecf8 100%);
+  border-bottom:1px solid var(--line);
+}
+.news-media.crest::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 46%, rgba(20,39,94,.07) 0%, rgba(20,39,94,0) 58%);
+}
+.news-media.crest img{
+  position:relative;z-index:1;width:auto;max-width:62%;height:80%;object-fit:contain;mix-blend-mode:multiply;
+}
+.news-card:hover .news-media.crest img{transform:scale(1.04);}
+.cat{
+  position:absolute;left:14px;top:14px;z-index:2;background:var(--gold);color:var(--navy);
+  font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:13px;letter-spacing:.13em;
+  text-transform:uppercase;padding:5px 11px;border-radius:5px;
+}
+.news-body{padding:22px 24px 26px;display:flex;flex-direction:column;flex:1;}
+.date{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8590a6;margin-bottom:10px;}
+.news-body h3{font-size:25px;line-height:1.15;margin-bottom:11px;}
+.news-card:hover h3{color:var(--navy-700);}
+.news-body p{margin:0 0 18px;font-size:15.5px;}
+.news-body .read{
+  margin-top:auto;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:16px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--navy);
+}
+.news-card:hover .read{color:var(--gold-dark);}
+
+/* ---------- join banner ---------- */
+.join{background:var(--navy);position:relative;overflow:hidden;padding:64px 0;}
+.join::before{
+  content:"";position:absolute;right:-140px;top:-90px;width:460px;height:460px;border-radius:50%;
+  background:rgba(255,255,255,.04);
+}
+.join::after{
+  content:"";position:absolute;left:-90px;bottom:-170px;width:340px;height:340px;border-radius:50%;
+  background:rgba(245,195,59,.07);
+}
+.join .wrap{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap;}
+.join h2{color:#fff;font-size:clamp(28px,3.8vw,42px);text-transform:uppercase;max-width:26ch;}
+.join p{color:rgba(255,255,255,.78);margin:12px 0 0;max-width:52ch;font-size:17px;}
+.join-cta{display:flex;gap:14px;flex-wrap:wrap;}
+
+/* ---------- sponsors ---------- */
+.sponsors{background:#fff;padding:76px 0 84px;text-align:center;}
+.sponsors h2{font-size:clamp(28px,3.4vw,38px);text-transform:uppercase;}
+.sponsors > .wrap > p{margin:10px auto 40px;max-width:54ch;font-size:16.5px;}
+.sponsor-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:22px;align-items:stretch;
+}
+.sponsor{
+  display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:26px 22px;min-height:118px;transition:border-color .2s ease,box-shadow .2s ease;
+}
+.sponsor img{
+  max-height:60px;width:auto;object-fit:contain;
+  filter:grayscale(1) contrast(1.08);opacity:.8;transition:filter .25s ease,opacity .25s ease;
+}
+.sponsor:hover{border-color:#c9d2e5;box-shadow:var(--shadow);}
+.sponsor:hover img{filter:grayscale(0);opacity:1;}
+.sponsors .link-more{display:inline-block;margin-top:38px;}
+
+/* ---------- footer ---------- */
+footer{background:var(--navy);color:rgba(255,255,255,.72);padding:70px 0 0;font-size:15.5px;}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:40px;padding-bottom:52px;}
+footer h4{
+  color:#fff;font-size:20px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:18px;
+}
+.foot-brand{display:flex;align-items:center;gap:13px;margin-bottom:18px;}
+.foot-brand img{
+  width:58px;height:58px;object-fit:contain;flex:none;
+  background:#fff;border-radius:12px;padding:5px;
+}
+.foot-brand .brand-name{color:#fff;font-size:26px;}
+.foot-brand .brand-sub{color:rgba(255,255,255,.5);}
+footer p{margin:0 0 12px;}
+footer address{font-style:normal;line-height:1.75;}
+footer ul{list-style:none;margin:0;padding:0;}
+footer ul li{margin-bottom:10px;}
+footer ul a{transition:color .18s ease;}
+footer ul a:hover{color:var(--gold);}
+footer a.mail:hover{color:var(--gold);}
+.socials{display:flex;gap:11px;margin-top:6px;}
+.socials a{
+  width:42px;height:42px;border-radius:9px;background:rgba(255,255,255,.09);
+  display:flex;align-items:center;justify-content:center;transition:background .2s ease,transform .2s ease;
+}
+.socials a:hover{background:var(--gold);transform:translateY(-2px);}
+.socials svg{width:19px;height:19px;fill:#fff;transition:fill .2s ease;}
+.socials a:hover svg{fill:var(--navy);}
+.foot-hours{
+  background:rgba(255,255,255,.06);border-radius:10px;padding:16px 18px;margin-top:20px;font-size:14.5px;
+}
+.foot-hours b{color:#fff;display:block;font-weight:600;margin-bottom:4px;}
+.foot-bottom{
+  border-top:1px solid rgba(255,255,255,.12);padding:22px 0 26px;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13.5px;color:rgba(255,255,255,.5);
+}
+.foot-bottom a:hover{color:var(--gold);}
+.foot-bottom .links{display:flex;gap:20px;flex-wrap:wrap;}
+
+/* ---------- responsive ---------- */
+@media (max-width:1080px){
+  .nav a{padding:9px 10px;font-size:18px;}
+  .card-grid{grid-template-columns:1fr 1fr;}
+  .card-grid .card:last-child{grid-column:1 / -1;}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:36px 30px;}
+}
+@media (max-width:900px){
+  .burger{display:flex;}
+  .nav{
+    position:absolute;top:78px;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);
+    flex-direction:column;align-items:stretch;gap:0;padding:10px 20px 22px;
+    box-shadow:0 18px 30px rgba(13,26,64,.12);
+    display:none;
+  }
+  .nav.open{display:flex;}
+  .nav a{padding:14px 6px;font-size:21px;border-radius:0;border-bottom:1px solid var(--line);}
+  .nav a.active::after{left:6px;right:auto;width:26px;bottom:6px;}
+  .nav .btn{margin:16px 0 0;width:100%;padding:15px 20px;}
+  .news-grid{grid-template-columns:1fr 1fr;}
+  .news-grid .news-card:last-child{grid-column:1 / -1;}
+  .news-grid .news-card:last-child .news-media{aspect-ratio:21/7;}
+  .hero{min-height:560px;}
+  .hero-inner{padding:80px 24px 54px;}
+}
+@media (max-width:720px){
+  body{font-size:16px;}
+  .wrap{padding:0 18px;}
+  .card-grid{grid-template-columns:1fr;}
+  .card-grid .card:last-child{grid-column:auto;}
+  .news-grid{grid-template-columns:1fr;}
+  .news-grid .news-card:last-child{grid-column:auto;}
+  .news-grid .news-card:last-child .news-media{aspect-ratio:16/10;}
+  .sponsor-grid{grid-template-columns:1fr 1fr;}
+  .foot-grid{grid-template-columns:1fr;gap:34px;padding-bottom:40px;}
+  .matches{padding:60px 0 66px;}
+  .news{padding:62px 0 70px;}
+  .sponsors{padding:58px 0 64px;}
+  .join{padding:52px 0;}
+  .hero{min-height:520px;}
+  .hero-inner{padding:64px 18px 46px;}
+  .hero p.lead{font-size:17px;}
+  .hero-cta .btn{flex:1 1 100%;}
+  .hero-facts{gap:26px;margin-top:34px;}
+  .hero-facts b{font-size:28px;}
+  .join-cta{width:100%;}
+  .join-cta .btn{flex:1 1 100%;}
+  .statusbar .sep{margin-left:0;width:100%;}
+  .sec-head{margin-bottom:26px;}
+  .brand-name{font-size:24px;}
+  .brand img{width:42px;height:42px;}
+  .row{padding:12px 16px;gap:10px;}
+  .row .time{min-width:44px;font-size:18px;}
+  .row .teams{font-size:15px;}
+  .daylabel{padding:9px 16px;}
+  .card-head{padding:14px 16px;}
+  .card-foot{padding:14px 16px;}
+  table.stand th:first-child,table.stand td:first-child{padding-left:16px;}
+  table.stand th:last-child,table.stand td:last-child{padding-right:16px;}
+  .news-body{padding:20px 20px 24px;}
+  .news-body h3{font-size:23px;}
+  footer{padding-top:56px;}
+}
+@media (max-width:400px){
+  .brand-sub{display:none;}
+  .hero-facts{gap:18px 24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#">
+      <img src="assets/logo_vvpeize.png" alt="Clublogo V.V. Peize">
+      <span class="brand-txt">
+        <span class="brand-name">V.V. Peize</span>
+        <span class="brand-sub">Opgericht 1931</span>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="#" class="active">Home</a>
+      <a href="#">Clubinfo</a>
+      <a href="#">Teams</a>
+      <a href="#">Toernooien</a>
+      <a href="#">Activiteiten</a>
+      <a href="#">Vacatures</a>
+      <a href="#lid" class="btn btn-gold">Lid worden</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-img">
+    <img src="assets/veld3.jpg" alt="Clubgebouw en hoofdveld van V.V. Peize">
+  </div>
+  <div class="wrap hero-inner">
+    <div class="hero-content">
+      <span class="hero-tag"><span class="dot"></span> Sportpark Peize &middot; Hereweg 1b</span>
+      <h1>Voetbalvereniging Peize<em>al ruim 75 jaar dé club van het dorp</em></h1>
+      <p class="lead">
+        Van de allerjongste Kabouters tot de veteranen op zondag: bij V.V. Peize voetbal je
+        in een vereniging waar plezier, elkaar helpen en een vol terras na de wedstrijd
+        net zo belangrijk zijn als de uitslag.
+      </p>
+      <div class="hero-cta">
+        <a href="#wedstrijden" class="btn btn-gold">Bekijk programma</a>
+        <a href="#lid" class="btn btn-outline">Word lid</a>
+      </div>
+      <div class="hero-facts">
+        <div><b>1931</b><span>Opgericht</span></div>
+        <div><b>28</b><span>Teams</span></div>
+        <div><b>650+</b><span>Leden</span></div>
+        <div><b>4</b><span>Velden</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATUSBALK ================= -->
+<div class="statusbar">
+  <div class="wrap">
+    <span class="status-pill"><span class="dot"></span> Afgelastingen: geen</span>
+    <p>Alle velden zijn bespeelbaar — het volledige programma van dit weekend gaat door.</p>
+    <span class="sep">Bijgewerkt vr 28 aug &middot; 17:40</span>
+  </div>
+</div>
+
+<!-- ================= WEDSTRIJDEN ================= -->
+<section class="matches" id="wedstrijden">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Dit weekend</p>
+        <h2>Wedstrijden</h2>
+        <p>Programma, uitslagen en stand van onze teams — automatisch bijgewerkt vanuit de KNVB-competitiegegevens.</p>
+      </div>
+      <a href="#" class="link-more">Volledig wedstrijdoverzicht →</a>
+    </div>
+
+    <div class="card-grid">
+
+      <!-- Programma -->
+      <article class="card">
+        <div class="card-head">
+          <h3>Programma</h3>
+          <span class="badge gold">Weekend 29 &amp; 30 aug</span>
+        </div>
+        <div class="card-body">
+          <div class="daylabel">Zaterdag 29 augustus</div>
+          <div class="row peize">
+            <span class="time">12:00</span>
+            <span class="teams">V.V. Westerkwartier 3 <span class="vs">–</span> <strong>Peize 4</strong></span>
+          </div>
+          <div class="row peize">
+            <span class="time">12:30</span>
+            <span class="teams"><strong>Peize 3</strong> <span class="vs">–</span> Roden 3</span>
+          </div>
+          <div class="row peize">
+            <span class="time">14:30</span>
+            <span class="teams"><strong>Peize 2</strong> <span class="vs">–</span> Marum 4</span>
+          </div>
+          <div class="row peize">
+            <span class="time">14:30</span>
+            <span class="teams">Blue Boys VR1 <span class="vs">–</span> <strong>Peize VR1</strong></span>
+          </div>
+          <div class="daylabel">Zondag 30 augustus</div>
+          <div class="row peize">
+            <span class="time">11:00</span>
+            <span class="teams">Gomos 3 <span class="vs">–</span> <strong>Peize 3</strong></span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <a href="#">Volledig programma →</a>
+          <small>Bron: KNVB</small>
+        </div>
+      </article>
+
+      <!-- Uitslagen -->
+      <article class="card">
+        <div class="card-head">
+          <h3>Uitslagen</h3>
+          <span class="badge">Afgelopen weekend</span>
+        </div>
+        <div class="card-body">
+          <div class="daylabel">Zaterdag 22 augustus</div>
+          <div class="row peize win">
+            <span class="teams"><strong>Peize 1</strong> <span class="vs">–</span> VAKO 1</span>
+            <span class="score">3 – 1</span>
+          </div>
+          <div class="row peize win">
+            <span class="teams">Actief '58 2 <span class="vs">–</span> <strong>Peize 2</strong></span>
+            <span class="score">1 – 2</span>
+          </div>
+          <div class="row peize">
+            <span class="teams"><strong>Peize 4</strong> <span class="vs">–</span> Haulerwijk 4</span>
+            <span class="score">2 – 2</span>
+          </div>
+          <div class="row peize loss">
+            <span class="teams"><strong>Peize VR1</strong> <span class="vs">–</span> Roden VR1</span>
+            <span class="score">0 – 3</span>
+          </div>
+          <div class="daylabel">Zondag 23 augustus</div>
+          <div class="row peize win">
+            <span class="teams">Marum 5 <span class="vs">–</span> <strong>Peize 3</strong></span>
+            <span class="score">1 – 4</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <a href="#">Alle uitslagen →</a>
+          <small>Voorbeelddata</small>
+        </div>
+      </article>
+
+      <!-- Stand -->
+      <article class="card">
+        <div class="card-head">
+          <h3>Stand</h3>
+          <span class="badge">3e klasse B &middot; zaterdag</span>
+        </div>
+        <div class="card-body">
+          <table class="stand">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Club</th>
+                <th class="num">G</th>
+                <th class="num">DS</th>
+                <th class="num">P</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="club">Roden 1</td><td class="num">5</td><td class="num">+9</td><td class="pts">13</td></tr>
+              <tr class="peize"><td>2</td><td class="club">Peize 1</td><td class="num">5</td><td class="num">+6</td><td class="pts">11</td></tr>
+              <tr><td>3</td><td class="club">GOMOS 1</td><td class="num">5</td><td class="num">+4</td><td class="pts">10</td></tr>
+              <tr><td>4</td><td class="club">VAKO 1</td><td class="num">5</td><td class="num">+1</td><td class="pts">8</td></tr>
+              <tr><td>5</td><td class="club">Marum 1</td><td class="num">5</td><td class="num">0</td><td class="pts">7</td></tr>
+              <tr><td>6</td><td class="club">Haulerwijk 1</td><td class="num">5</td><td class="num">–3</td><td class="pts">6</td></tr>
+              <tr><td>7</td><td class="club">Actief '58 1</td><td class="num">5</td><td class="num">–6</td><td class="pts">4</td></tr>
+              <tr><td>8</td><td class="club">Blue Boys 1</td><td class="num">5</td><td class="num">–11</td><td class="pts">3</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-foot">
+          <a href="#">Volledige stand →</a>
+          <small>Voorbeelddata</small>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= NIEUWS ================= -->
+<section class="news" id="nieuws">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Van de club</p>
+        <h2>Nieuws</h2>
+        <p>Blijf op de hoogte van alles wat er speelt op en rond Sportpark Peize.</p>
+      </div>
+      <a href="#" class="link-more">Meer nieuws →</a>
+    </div>
+
+    <div class="news-grid">
+
+      <article class="news-card">
+        <div class="news-media crest">
+          <img src="assets/logo_vvpeize.png" alt="Clublogo V.V. Peize">
+          <span class="cat">Club Nieuws</span>
+        </div>
+        <div class="news-body">
+          <p class="date">14 augustus 2026</p>
+          <h3>ALV donderdag 24 september, Sporthuis Peize, 21u</h3>
+          <p>De algemene ledenvergadering vindt plaats op donderdag 24 september om 21:00 uur in het Sporthuis. Alle leden zijn van harte welkom.</p>
+          <span class="read">Lees verder →</span>
+        </div>
+      </article>
+
+      <article class="news-card">
+        <div class="news-media">
+          <img src="assets/veld1.jpg" alt="Sponsorvlaggen langs het veld">
+          <span class="cat">Club Nieuws</span>
+        </div>
+        <div class="news-body">
+          <p class="date">14 augustus 2026</p>
+          <h3>Einde vakantie: de velden, weer voetballen, vacatures en ALV</h3>
+          <p>De velden liggen er strak bij, de trainingen zijn weer begonnen en we zoeken nog vrijwilligers voor een aantal openstaande taken.</p>
+          <span class="read">Lees verder →</span>
+        </div>
+      </article>
+
+      <article class="news-card">
+        <div class="news-media">
+          <img src="assets/veld2.jpg" alt="Dug-outs langs het hoofdveld">
+          <span class="cat">Club Nieuws</span>
+        </div>
+        <div class="news-body">
+          <p class="date">25 juli 2026</p>
+          <h3>Piet Fransen Techniekschool</h3>
+          <p>Ook dit seizoen kunnen onze jeugdspelers hun techniek verder ontwikkelen bij de Piet Fransen Techniekschool op ons eigen sportpark.</p>
+          <span class="read">Lees verder →</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= LID WORDEN ================= -->
+<section class="join" id="lid">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow" style="color:var(--gold)">Word lid van V.V. Peize</p>
+      <h2>Voetballen in Peize? Kom een keer meetrainen.</h2>
+      <p>Jong of oud, beginner of ervaren speler — bij ons is iedereen welkom. De eerste drie trainingen zijn altijd vrijblijvend.</p>
+    </div>
+    <div class="join-cta">
+      <a href="#" class="btn btn-gold">Meld je aan</a>
+      <a href="#" class="btn btn-outline">Contact opnemen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SPONSORS ================= -->
+<section class="sponsors">
+  <div class="wrap">
+    <p class="eyebrow">Samen sterk</p>
+    <h2>Onze sponsors</h2>
+    <p>Dankzij onze sponsors kunnen wij elke week voetballen op een sportpark waar we trots op zijn.</p>
+    <div class="sponsor-grid">
+      <div class="sponsor"><img src="assets/sponsor_unipe.png" alt="Unipé Afbouw B.V."></div>
+      <div class="sponsor"><img src="assets/sponsor_plus.png" alt="PLUS De Weerd Peize"></div>
+      <div class="sponsor"><img src="assets/sponsor_boon.png" alt="Boon"></div>
+      <div class="sponsor"><img src="assets/sponsor_bakker.png" alt="Bakker"></div>
+    </div>
+    <a href="#" class="link-more">Ook sponsor worden? →</a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+
+      <div>
+        <div class="foot-brand">
+          <img src="assets/logo_vvpeize.png" alt="Clublogo V.V. Peize">
+          <span class="brand-txt">
+            <span class="brand-name">V.V. Peize</span>
+            <span class="brand-sub">Opgericht 1931</span>
+          </span>
+        </div>
+        <p>De voetbalvereniging van Peize — een club van en voor het dorp, met ruimte voor iedereen die wil voetballen.</p>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <address>
+          Sportpark V.V. Peize<br>
+          Hereweg 1b<br>
+          9321 CL Peize<br><br>
+          Tel: <a class="mail" href="tel:0505032886">050 5032886</a> (kantine)<br>
+          <a class="mail" href="mailto:info@vvpeize.nl">info@vvpeize.nl</a>
+        </address>
+      </div>
+
+      <div>
+        <h4>Snel naar</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Clubinfo</a></li>
+          <li><a href="#">Teams</a></li>
+          <li><a href="#">Toernooien</a></li>
+          <li><a href="#">Activiteiten</a></li>
+          <li><a href="#">Vacatures</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Volg de club</h4>
+        <div class="socials">
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.24 10.44 22v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22C18.34 21.24 22 17.08 22 12.06Z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 3.29A6.55 6.55 0 1 0 18.55 12 6.55 6.55 0 0 0 12 5.45Zm0 10.8A4.25 4.25 0 1 1 16.25 12 4.25 4.25 0 0 1 12 16.25Zm6.81-10.98a1.53 1.53 0 1 1-1.53-1.53 1.53 1.53 0 0 1 1.53 1.53Z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.9a3.02 3.02 0 0 0-2.12-2.14C19.5 4.25 12 4.25 12 4.25s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.9C0 8.79 0 12 0 12s0 3.21.5 5.1a3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14C24 15.21 24 12 24 12s0-3.21-.5-5.1ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg>
+          </a>
+          <a href="#" aria-label="X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.53 3h3.14l-6.86 7.84L22 21h-6.33l-4.95-6.48L4.96 21H1.82l7.34-8.39L2 3h6.49l4.48 5.92L17.53 3Zm-1.1 16.13h1.74L7.65 4.78H5.78l10.65 14.35Z"/></svg>
+          </a>
+        </div>
+        <div class="foot-hours">
+          <b>Kantine geopend</b>
+          za 08:30 – 18:00 &middot; zo 09:30 – 17:00<br>
+          di &amp; do (training) 18:30 – 22:30
+        </div>
+      </div>
+
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Voetbalvereniging Peize. Alle rechten voorbehouden.</span>
+      <span class="links">
+        <a href="#">Privacyverklaring</a>
+        <a href="#">Huisregels</a>
+        <a href="#">Contact</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var burger = document.getElementById('burger');
+  var nav = document.getElementById('nav');
+  burger.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
+  });
+  nav.addEventListener('click', function(e){
+    if(e.target.tagName === 'A' && window.innerWidth <= 900){
+      nav.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded','false');
+    }
+  });
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 900){
+      nav.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+</body>
+</html>

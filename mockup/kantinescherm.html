@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>V.V. Peize — Kantinescherm · Wedstrijden vandaag</title>
+<link rel="icon" href="assets/logo_vvpeize.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   V.V. PEIZE — narrowcasting / kantinescherm
+   Vast 1920x1080 (16:9). Wordt geschaald naar het venster,
+   zodat de verhoudingen op elke tv kloppen. Geen scroll.
+   Data komt in productie uit de Sportlink Club.Dataservice.
+   ============================================================ */
+:root{
+  --navy:#14275e;
+  --navy-deep:#0c1838;
+  --navy-line:#2a3f78;
+  --gold:#f5c33b;
+  --gold-dark:#d9a516;
+  --white:#ffffff;
+  --muted:#a9b6d6;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html,body{
+  margin:0;padding:0;height:100%;width:100%;
+  background:#05091a;overflow:hidden;
+}
+body{
+  font-family:'Barlow',Arial,Helvetica,sans-serif;
+  color:var(--white);
+  display:flex;align-items:center;justify-content:center;
+}
+img{display:block;}
+
+/* ---------- de vaste 1920x1080 stage ---------- */
+#stage{
+  position:relative;
+  width:1920px;height:1080px;
+  flex:none;
+  transform-origin:center center;
+  background:var(--navy-deep);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+}
+/* gedimde clubfoto als achtergrond */
+#stage::before{
+  content:"";position:absolute;inset:0;
+  background:url('assets/veld3.jpg') center 38% / cover no-repeat;
+  opacity:.16;
+  filter:grayscale(.35);
+}
+/* strak, vlak verloop erover (geen glans) */
+#stage::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(160deg,#1a2f6b 0%,var(--navy) 45%,#0b1734 100%);
+  opacity:.9;
+}
+#stage > *{position:relative;z-index:2;}
+
+/* ============ 1. TOPBALK ============ */
+.topbar{
+  flex:none;height:132px;
+  display:flex;align-items:center;
+  padding:0 46px;
+  background:rgba(8,17,45,.78);
+  border-bottom:5px solid var(--gold);
+}
+.brand{display:flex;align-items:center;gap:22px;width:430px;flex:none;}
+.brand img{width:92px;height:92px;object-fit:contain;}
+.brand-txt{line-height:1;}
+.brand-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:52px;letter-spacing:.03em;
+  text-transform:uppercase;color:var(--white);
+}
+.brand-sub{
+  font-family:'Barlow',sans-serif;font-weight:600;
+  font-size:20px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin-top:8px;
+}
+
+.headline{flex:1;text-align:center;line-height:1;}
+.headline h1{
+  margin:0;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:62px;letter-spacing:.035em;
+  text-transform:uppercase;color:var(--white);
+}
+.headline .date{
+  margin-top:10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;font-size:34px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);
+}
+
+.clockbox{width:430px;flex:none;text-align:right;line-height:1;}
+.clock{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:76px;letter-spacing:.02em;
+  color:var(--white);
+  font-variant-numeric:tabular-nums;
+}
+.clock .sep{color:var(--gold);}
+.clock .sep.tick{opacity:.25;}
+.updated{
+  margin-top:8px;
+  font-size:19px;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+/* ============ MIDDENDEEL ============ */
+.main{
+  flex:1;min-height:0;
+  display:flex;gap:30px;
+  padding:28px 46px 0;
+}
+
+/* ---------- 2. HOOFDTABEL ---------- */
+.tablewrap{flex:1;min-width:0;display:flex;flex-direction:column;}
+.row{
+  display:grid;
+  grid-template-columns:150px 1fr 196px 196px 196px;
+  align-items:center;
+  column-gap:16px;
+}
+.thead{
+  flex:none;
+  padding:0 18px 14px;
+  align-items:end;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;font-size:26px;letter-spacing:.13em;
+  line-height:1.06;
+  text-transform:uppercase;color:var(--gold);
+}
+.thead .c{text-align:center;}
+.thead .c:nth-child(2){text-align:left;}
+
+.tbody{flex:1;min-height:0;display:flex;flex-direction:column;gap:9px;}
+.tbody .row{
+  flex:1;
+  padding:0 18px;
+  background:rgba(255,255,255,.075);
+  border-left:9px solid var(--gold);
+  border-radius:6px;
+}
+.tbody .row.uit{
+  background:rgba(255,255,255,.035);
+  border-left-color:#41548c;
+  opacity:.72;
+}
+
+.tijd{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:52px;line-height:1;
+  color:var(--white);text-align:center;
+  font-variant-numeric:tabular-nums;
+}
+.wedstrijd{
+  font-size:33px;line-height:1.15;font-weight:500;
+  color:#dbe3f5;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.wedstrijd b{font-weight:700;color:var(--white);}
+.wedstrijd .vs{color:var(--gold);font-weight:600;padding:0 6px;}
+.cel{text-align:center;font-size:33px;font-weight:600;color:#dbe3f5;}
+
+.veld{
+  display:inline-block;
+  min-width:146px;padding:9px 14px;
+  background:var(--gold);color:#12224f;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:34px;line-height:1;
+  letter-spacing:.05em;text-transform:uppercase;
+  border-radius:5px;
+}
+.uitlabel{
+  display:inline-block;
+  min-width:110px;padding:8px 16px;
+  border:2px solid #6d80b8;color:#c3cee9;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:27px;line-height:1;
+  letter-spacing:.2em;text-transform:uppercase;
+  border-radius:5px;
+}
+.leeg{color:#7f8fbb;font-size:34px;font-weight:600;}
+
+.tblfoot{
+  flex:none;padding:11px 18px 0;
+  font-size:16px;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(169,182,214,.55);
+}
+
+/* ---------- 3. RECHTERKOLOM ---------- */
+.side{width:478px;flex:none;display:flex;flex-direction:column;gap:24px;}
+.card{
+  background:rgba(9,19,48,.72);
+  border:2px solid rgba(245,195,59,.28);
+  border-radius:8px;
+  padding:24px 26px;
+}
+.card h2{
+  margin:0 0 18px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:34px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--gold);
+  line-height:1.05;
+}
+.infolist{list-style:none;margin:0;padding:0;}
+.infolist li{
+  display:flex;align-items:flex-start;gap:14px;
+  font-size:27px;line-height:1.28;font-weight:500;color:#e2e8f7;
+  padding:13px 0;
+  border-top:1px solid rgba(255,255,255,.11);
+}
+.infolist li:first-child{border-top:0;padding-top:2px;}
+.infolist li:last-child{padding-bottom:2px;}
+.ico{
+  flex:none;width:34px;text-align:center;
+  font-size:26px;color:var(--gold);line-height:1.35;
+}
+.infolist b{font-weight:700;color:#fff;}
+
+.sponsors{flex:1;display:flex;flex-direction:column;}
+.sponsorgrid{
+  flex:1;
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:16px;
+}
+.tile{
+  background:#fff;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  padding:12px 14px;
+  border:3px solid transparent;
+  transition:border-color .5s ease, box-shadow .5s ease, transform .5s ease;
+}
+.tile img{width:100%;max-height:100%;object-fit:contain;}
+.tile.on{
+  border-color:var(--gold);
+  box-shadow:0 0 0 5px rgba(245,195,59,.22);
+  transform:scale(1.035);
+}
+
+/* ============ 4. VOETREGEL ============ */
+.footer{
+  flex:none;height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 46px;
+  background:rgba(8,17,45,.72);
+  border-top:2px solid rgba(245,195,59,.35);
+  font-size:17px;font-weight:500;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(190,201,228,.8);
+}
+.footer .dot{color:var(--gold);padding:0 8px;}
+.live{display:flex;align-items:center;gap:11px;}
+.live .blip{
+  width:11px;height:11px;border-radius:50%;
+  background:#5ddc7a;box-shadow:0 0 10px #5ddc7a;
+}
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <!-- ===== 1. topbalk ===== -->
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/logo_vvpeize.png" alt="V.V. Peize">
+      <div class="brand-txt">
+        <div class="brand-name">V.V. Peize</div>
+        <div class="brand-sub">Sportpark Peize</div>
+      </div>
+    </div>
+
+    <div class="headline">
+      <h1>Wedstrijden vandaag</h1>
+      <div class="date">Zaterdag 29 augustus</div>
+    </div>
+
+    <div class="clockbox">
+      <div class="clock" id="clock">14<span class="sep" id="sep">:</span>07</div>
+      <div class="updated">Bijgewerkt 08:45</div>
+    </div>
+  </header>
+
+  <!-- ===== middendeel ===== -->
+  <div class="main">
+
+    <!-- ===== 2. hoofdtabel ===== -->
+    <section class="tablewrap">
+      <div class="row thead">
+        <div class="c">Tijd</div>
+        <div class="c">Wedstrijd</div>
+        <div class="c">Veld</div>
+        <div class="c">Kleedkamer<br>thuis</div>
+        <div class="c">Kleedkamer<br>uit</div>
+      </div>
+
+      <div class="tbody">
+
+        <div class="row">
+          <div class="tijd">09:00</div>
+          <div class="wedstrijd"><b>Peize JO11-1</b><span class="vs">–</span>Roden JO11-2</div>
+          <div class="cel"><span class="veld">Veld 2</span></div>
+          <div class="cel">K3</div>
+          <div class="cel">K4</div>
+        </div>
+
+        <div class="row">
+          <div class="tijd">10:15</div>
+          <div class="wedstrijd"><b>Peize JO13-1</b><span class="vs">–</span>GOMOS JO13-1</div>
+          <div class="cel"><span class="veld">Veld 2</span></div>
+          <div class="cel">K3</div>
+          <div class="cel">K4</div>
+        </div>
+
+        <div class="row">
+          <div class="tijd">10:30</div>
+          <div class="wedstrijd"><b>Peize JO17-1</b><span class="vs">–</span>VAKO JO17-1</div>
+          <div class="cel"><span class="veld">Veld 1</span></div>
+          <div class="cel">K1</div>
+          <div class="cel">K2</div>
+        </div>
+
+        <div class="row uit">
+          <div class="tijd">12:00</div>
+          <div class="wedstrijd">V.V. Westerkwartier 3<span class="vs">–</span><b>Peize 4</b></div>
+          <div class="cel"><span class="uitlabel">Uit</span></div>
+          <div class="cel"><span class="leeg">–</span></div>
+          <div class="cel"><span class="leeg">–</span></div>
+        </div>
+
+        <div class="row">
+          <div class="tijd">12:30</div>
+          <div class="wedstrijd"><b>Peize 3</b><span class="vs">–</span>Roden 3</div>
+          <div class="cel"><span class="veld">Veld 2</span></div>
+          <div class="cel">K3</div>
+          <div class="cel">K4</div>
+        </div>
+
+        <div class="row">
+          <div class="tijd">14:30</div>
+          <div class="wedstrijd"><b>Peize 2</b><span class="vs">–</span>Marum 4</div>
+          <div class="cel"><span class="veld">Veld 1</span></div>
+          <div class="cel">K1</div>
+          <div class="cel">K2</div>
+        </div>
+
+        <div class="row uit">
+          <div class="tijd">14:30</div>
+          <div class="wedstrijd">Blue Boys VR1<span class="vs">–</span><b>Peize VR1</b></div>
+          <div class="cel"><span class="uitlabel">Uit</span></div>
+          <div class="cel"><span class="leeg">–</span></div>
+          <div class="cel"><span class="leeg">–</span></div>
+        </div>
+
+      </div>
+
+      <div class="tblfoot">Voorbeelddata</div>
+    </section>
+
+    <!-- ===== 3. rechterkolom ===== -->
+    <aside class="side">
+
+      <div class="card">
+        <h2>Vandaag op Sportpark Peize</h2>
+        <ul class="infolist">
+          <li><span class="ico">☕</span><span>Kantine open vanaf <b>08:30</b></span></li>
+          <li><span class="ico">✓</span><span><b>Geen afgelastingen</b> — alle velden bespeelbaar</span></li>
+          <li><span class="ico">★</span><span><b>Peize 2 – Marum 4</b><br>hoofdveld, 14:30</span></li>
+        </ul>
+      </div>
+
+      <div class="card sponsors">
+        <h2>Mede mogelijk gemaakt door onze sponsors</h2>
+        <div class="sponsorgrid" id="sponsorgrid">
+          <div class="tile on"><img src="assets/sponsor_unipe.png" alt="Unipe"></div>
+          <div class="tile"><img src="assets/sponsor_plus.png" alt="Plus"></div>
+          <div class="tile"><img src="assets/sponsor_bakker.png" alt="Bakker"></div>
+          <div class="tile"><img src="assets/sponsor_boon.png" alt="Boon"></div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- ===== 4. voetregel ===== -->
+  <footer class="footer">
+    <div>Automatisch bijgewerkt vanuit Sportlink<span class="dot">·</span>vvpeize.nl</div>
+    <div class="live"><span class="blip"></span> Club.Dataservice</div>
+  </footer>
+
+</div>
+
+<script>
+/* ---- 1. stage schalen naar het venster (tv, beamer of browser) ---- */
+(function(){
+  var stage = document.getElementById('stage');
+  function fit(){
+    var s = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+  fit();
+  window.addEventListener('resize', fit);
+})();
+
+/* ---- 2. live klok, uu:mm met knipperende seconden-tick ---- */
+(function(){
+  var el = document.getElementById('clock');
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+  function tick(){
+    var d = new Date();
+    var sep = '<span class="sep' + (d.getSeconds() % 2 ? ' tick' : '') + '">:</span>';
+    el.innerHTML = pad(d.getHours()) + sep + pad(d.getMinutes());
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ---- 3. sponsorlogo's rouleren: elke 5 sec licht er één op ---- */
+(function(){
+  var tiles = document.querySelectorAll('#sponsorgrid .tile');
+  var i = 0;
+  setInterval(function(){
+    tiles[i].classList.remove('on');
+    i = (i + 1) % tiles.length;
+    tiles[i].classList.add('on');
+  }, 5000);
+})();
+</script>
+</body>
+</html>
