@@ -104,6 +104,59 @@
     color: var(--muted);
   }
   .route .kosten strong { color: var(--navy); }
+  .kostenblok {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(20,39,94,.06);
+    padding: 26px 28px;
+    margin-bottom: 44px;
+    overflow-x: auto;
+  }
+  .kostenblok h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .kostenblok table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    min-width: 560px;
+  }
+  .kostenblok th, .kostenblok td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .kostenblok thead th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    background: var(--navy);
+    color: #fff;
+  }
+  .kostenblok thead th:nth-child(3) { color: var(--gold); }
+  .kostenblok td:first-child { color: var(--muted); }
+  .kostenblok tr.totaal td {
+    background: #fdf6e3;
+    font-weight: 600;
+    color: var(--navy);
+    border-bottom: none;
+  }
+  .kostenblok tr.totaal td:first-child { color: var(--navy); }
+  .kostenblok .voetnoot {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
   .routes-intro {
     text-align: center;
     margin: 20px 0 24px;
@@ -229,6 +282,62 @@
         </ul>
         <div class="kosten">Kosten: <strong>€125 eenmalig + €1,10 per lid per jaar</strong> + eigen hosting (~€50–100/jr) · hoort bij <strong>"Zelfbouw-variant", "Programma boven de vouw"</strong> en het <strong>"Kantinescherm"</strong></div>
       </div>
+    </div>
+
+    <div class="kostenblok">
+      <h3>Kosten naast elkaar</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Kostenpost</th>
+            <th>Route 1 · Club.Website</th>
+            <th>Route 2 · Alleen de data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Eenmalig</td>
+            <td>— (al betaald bij de start)</td>
+            <td>€125 (Club.Dataservice)</td>
+          </tr>
+          <tr>
+            <td>Vast per jaar</td>
+            <td>€132</td>
+            <td>€0</td>
+          </tr>
+          <tr>
+            <td>Per lid per jaar</td>
+            <td>€1,35</td>
+            <td>€1,10</td>
+          </tr>
+          <tr>
+            <td>Hosting website</td>
+            <td>Inbegrepen</td>
+            <td>±€50–100 per jaar (eigen hosting)</td>
+          </tr>
+          <tr>
+            <td>Kantinescherm (tv)</td>
+            <td>+ Club.TV: €275 eenmalig + €1,21 per lid per jaar</td>
+            <td>Inbegrepen in de datakoppeling — alleen ±€70 eenmalig voor een afspeelkastje per tv</td>
+          </tr>
+          <tr>
+            <td>Onderhoud &amp; support</td>
+            <td>Door Sportlink</td>
+            <td>Door een vrijwilliger van de club</td>
+          </tr>
+          <tr class="totaal">
+            <td>Voorbeeld: website bij 500 leden</td>
+            <td>±€810 per jaar</td>
+            <td>±€625–675 per jaar (+ €125 eenmalig)</td>
+          </tr>
+          <tr class="totaal">
+            <td>Voorbeeld: website + kantinescherm bij 500 leden</td>
+            <td>±€1.415 per jaar (+ €275 eenmalig)</td>
+            <td>±€625–675 per jaar (+ ±€195 eenmalig)</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="voetnoot">Tarieven van sportlink.nl, september 2026. De voorbeeldbedragen zijn afgerond en bedoeld voor de vergelijking; het werkelijke ledental bepaalt de uitkomst. Niet in geld uitgedrukt: route 2 vraagt bouwtijd en een vrijwilliger voor het onderhoud, en bij route 1 vervalt de Club.Ads-vergoeding (±€1,50 per lid per seizoen) zodra je zou stoppen.</div>
     </div>
 
     <div class="routes-intro">
