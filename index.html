@@ -65,6 +65,58 @@
     margin: -28px auto 64px;
     padding: 0 24px;
   }
+  .routes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    margin-bottom: 44px;
+  }
+  .route {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 26px 28px;
+    box-shadow: 0 2px 8px rgba(20,39,94,.06);
+    border-top: 4px solid var(--navy);
+  }
+  .route.alt { border-top-color: var(--gold); }
+  .route h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    color: var(--navy);
+  }
+  .route .sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 2px;
+    margin-bottom: 14px;
+  }
+  .route p { font-size: 15px; line-height: 1.6; color: var(--text); }
+  .route ul { margin: 12px 0 0 18px; font-size: 15px; line-height: 1.7; color: var(--text); }
+  .route .kosten {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .route .kosten strong { color: var(--navy); }
+  .routes-intro {
+    text-align: center;
+    margin: 20px 0 24px;
+  }
+  .routes-intro h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--navy);
+  }
+  .routes-intro p { color: var(--muted); font-size: 16px; max-width: 640px; margin: 6px auto 0; }
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -154,6 +206,36 @@
   </header>
 
   <main>
+    <div class="routes">
+      <div class="route">
+        <h3>Route 1 · Sportlink Club.Website</h3>
+        <div class="sub">Het huidige abonnement — Sportlink levert en host de complete website</div>
+        <p>Sportlink verzorgt alles: hosting, onderhoud, updates én de website zelf. De wedstrijddata (programma, uitslagen, standen, afgelastingen) stroomt automatisch in via widgets. De keerzijde: alle clubs draaien op hetzelfde vaste thema. Aanpasbaar zijn alleen de kleuren, het lettertype, foto's en de indeling van widgets — geen eigen vormgeving.</p>
+        <ul>
+          <li>Zorgeloos: geen technische vrijwilliger nodig</li>
+          <li>Lid worden-formulier schrijft direct in de ledenadministratie</li>
+          <li>Beperkte designvrijheid + advertenties (Club.Ads)</li>
+        </ul>
+        <div class="kosten">Kosten: <strong>€132 per jaar + €1,35 per lid per jaar</strong> · hoort bij de kaart <strong>"Sportlink-variant"</strong> hieronder</div>
+      </div>
+      <div class="route alt">
+        <h3>Route 2 · Alleen de data (Club.Dataservice)</h3>
+        <div class="sub">Zelfbouw — Sportlink levert alléén de datakoppeling, de club bouwt de site</div>
+        <p>Bij deze route neem je van Sportlink alleen de <em>gegevens</em> af: een datakoppeling (API) die programma, uitslagen, standen, teamindelingen en zelfs veld- en kleedkamerindeling live aanlevert. De website zelf bouw en host de club — bijvoorbeeld in WordPress — met volledige vrijheid in vormgeving. Dezelfde koppeling voedt ook een kantinescherm, zonder extra abonnement.</p>
+        <ul>
+          <li>Volledige designvrijheid, geen advertenties</li>
+          <li>Lid worden blijft werken via het KNVB-formulier</li>
+          <li>Vraagt een vrijwilliger die de site bouwt en onderhoudt</li>
+        </ul>
+        <div class="kosten">Kosten: <strong>€125 eenmalig + €1,10 per lid per jaar</strong> + eigen hosting (~€50–100/jr) · hoort bij <strong>"Zelfbouw-variant", "Programma boven de vouw"</strong> en het <strong>"Kantinescherm"</strong></div>
+      </div>
+    </div>
+
+    <div class="routes-intro">
+      <h2>De vier voorstellen</h2>
+      <p>Klik op een kaart om de mockup op ware grootte te bekijken.</p>
+    </div>
+
     <div class="grid">
       <a class="card" href="mockup/index-sportlink.html">
         <div class="thumb"><img src="mockup/mock_sportlink_desktop.png" alt="Screenshot Sportlink-variant"></div>
