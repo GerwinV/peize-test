@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designvoorstellen · V.V. Peize</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #14275e;
+    --navy-dark: #0d1a42;
+    --gold: #f5c33b;
+    --bg: #f5f7fb;
+    --line: #e3e8f2;
+    --text: #23293a;
+    --muted: #6b7386;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+    color: #fff;
+    padding: 48px 24px 56px;
+    text-align: center;
+  }
+  header img {
+    height: 96px;
+    margin-bottom: 16px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 14px;
+    border-bottom: 3px solid var(--gold);
+    box-shadow: 0 6px 18px rgba(0,0,0,.3);
+  }
+  header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 5vw, 48px);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    line-height: 1.05;
+  }
+  header h1 span { color: var(--gold); }
+  header p {
+    margin-top: 12px;
+    color: rgba(255,255,255,.75);
+    font-size: 17px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 1180px;
+    margin: -28px auto 64px;
+    padding: 0 24px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(20,39,94,.06);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(20,39,94,.16);
+  }
+  .thumb {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: 3px solid var(--gold);
+    background: var(--navy);
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .card-body { padding: 20px 22px 22px; display: flex; flex-direction: column; flex: 1; }
+  .tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--navy);
+    align-self: flex-start;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 12px;
+  }
+  .card h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    color: var(--navy);
+    line-height: 1.1;
+  }
+  .card p { margin-top: 8px; font-size: 15px; color: var(--muted); line-height: 1.55; flex: 1; }
+  .open {
+    margin-top: 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--navy);
+  }
+  .open::after { content: ' →'; color: var(--gold); }
+  footer {
+    background: var(--navy-dark);
+    color: rgba(255,255,255,.6);
+    text-align: center;
+    padding: 20px 24px;
+    font-size: 13px;
+  }
+  footer strong { color: rgba(255,255,255,.85); font-weight: 600; }
+  @media (max-width: 640px) {
+    header { padding: 36px 20px 48px; }
+    header img { height: 72px; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <img src="mockup/assets/logo_vvpeize.png" alt="Clublogo V.V. Peize">
+    <h1>Designvoorstellen <span>vvpeize.nl</span></h1>
+    <p>Vier mockups om naast elkaar te leggen: wat kan binnen het huidige Sportlink-abonnement, wat kan met zelfbouw — en hoe een kantinescherm eruit zou zien.</p>
+  </header>
+
+  <main>
+    <div class="grid">
+      <a class="card" href="mockup/index-sportlink.html">
+        <div class="thumb"><img src="mockup/mock_sportlink_desktop.png" alt="Screenshot Sportlink-variant"></div>
+        <div class="card-body">
+          <span class="tag">Nu al haalbaar</span>
+          <h2>Sportlink-variant</h2>
+          <p>Wat er gratis kan binnen het huidige Club.Website-abonnement: header met logo, clubkleuren, uitslagen- en standenwidgets, sponsorbalk en een echte footer — binnen de beperkingen van het vaste thema.</p>
+          <span class="open">Bekijk variant</span>
+        </div>
+      </a>
+
+      <a class="card" href="mockup/index.html">
+        <div class="thumb"><img src="mockup/mock_desktop.png" alt="Screenshot zelfbouw-variant"></div>
+        <div class="card-body">
+          <span class="tag">Zelfbouw</span>
+          <h2>Zelfbouw-variant</h2>
+          <p>De droomversie met volledige designvrijheid: full-width hero, moderne kaarten en typografie. Haalbaar met een eigen WordPress-site plus de Sportlink Club.Dataservice-koppeling.</p>
+          <span class="open">Bekijk variant</span>
+        </div>
+      </a>
+
+      <a class="card" href="mockup/index-programma.html">
+        <div class="thumb"><img src="mockup/mock_programma_fold.png" alt="Screenshot variant met programma boven de vouw"></div>
+        <div class="card-body">
+          <span class="tag">Zelfbouw · alternatief</span>
+          <h2>Programma boven de vouw</h2>
+          <p>Zelfde zelfbouw-stijl, maar met het wedstrijdprogramma direct bij binnenkomst in beeld: een compactere hero met de programmakaart ernaast — voor wie op zaterdagochtend snel de aanvangstijd zoekt.</p>
+          <span class="open">Bekijk variant</span>
+        </div>
+      </a>
+
+      <a class="card" href="mockup/kantinescherm.html">
+        <div class="thumb"><img src="mockup/mock_kantinescherm.png" alt="Screenshot kantinescherm"></div>
+        <div class="card-body">
+          <span class="tag">TV · Narrowcasting</span>
+          <h2>Kantinescherm</h2>
+          <p>Full-screen tv-weergave voor in de kantine: de wedstrijden van vandaag met veld- en kleedkamerindeling, live klok en roulerende sponsors. Gevoed door dezelfde Sportlink-data. Opent op tv-formaat (1920×1080).</p>
+          <span class="open">Bekijk variant</span>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <strong>V.V. Peize</strong> · designvoorstellen september 2026 · uitslagen, standen en enkele details in de mockups zijn voorbeelddata
+  </footer>
+</body>
+</html>
