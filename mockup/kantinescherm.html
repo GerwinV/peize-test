@@ -2,26 +2,39 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>V.V. Peize — Kantinescherm · Wedstrijden vandaag</title>
+<title>Sporthuis Peize — Kantinescherm · Wedstrijden vandaag</title>
 <link rel="icon" href="assets/logo_vvpeize.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   V.V. PEIZE — narrowcasting / kantinescherm
-   Vast 1920x1080 (16:9). Wordt geschaald naar het venster,
-   zodat de verhoudingen op elke tv kloppen. Geen scroll.
-   Data komt in productie uit de Sportlink Club.Dataservice.
+   SPORTHUIS PEIZE — narrowcasting / kantinescherm
+   Vast 1920x1080 (16:9), geschaald naar het venster. Geen scroll.
+   3 slides die automatisch rouleren:
+     1. combi-overzicht velden + sporthal   (20 s)
+     2. Volleybalvereniging Peize           (10 s)
+     3. Jumping Five basketbal              (10 s)
+   ?slide=1|2|3 in de URL zet één slide vast (screenshots/debug).
+   Data komt in productie uit Sportlink / Nevobo.
    ============================================================ */
 :root{
   --navy:#14275e;
   --navy-deep:#0c1838;
   --navy-line:#2a3f78;
   --gold:#f5c33b;
+  --gold-soft:#D8C578;
   --gold-dark:#d9a516;
   --white:#ffffff;
   --muted:#a9b6d6;
+  /* volleybal */
+  --vb:#1565C0;
+  --vb-deep:#0b3f81;
+  --vb-light:#dcebfb;
+  /* basketbal */
+  --bb:#E8641B;
+  --bb-dark:#222222;
+  --bb-deep:#161616;
 }
 *,*::before,*::after{box-sizing:border-box;}
 html,body{
@@ -45,14 +58,12 @@ img{display:block;}
   overflow:hidden;
   display:flex;flex-direction:column;
 }
-/* gedimde clubfoto als achtergrond */
 #stage::before{
   content:"";position:absolute;inset:0;
   background:url('assets/veld3.jpg') center 38% / cover no-repeat;
   opacity:.16;
   filter:grayscale(.35);
 }
-/* strak, vlak verloop erover (geen glans) */
 #stage::after{
   content:"";position:absolute;inset:0;
   background:linear-gradient(160deg,#1a2f6b 0%,var(--navy) 45%,#0b1734 100%);
@@ -60,90 +71,124 @@ img{display:block;}
 }
 #stage > *{position:relative;z-index:2;}
 
-/* ============ 1. TOPBALK ============ */
+/* ============ 1. TOPBALK (persistent) ============ */
 .topbar{
-  flex:none;height:132px;
+  flex:none;height:126px;
   display:flex;align-items:center;
   padding:0 46px;
-  background:rgba(8,17,45,.78);
+  background:rgba(8,17,45,.82);
   border-bottom:5px solid var(--gold);
+  z-index:6;
 }
-.brand{display:flex;align-items:center;gap:22px;width:430px;flex:none;}
-.brand img{width:92px;height:92px;object-fit:contain;}
-.brand-txt{line-height:1;}
+.brand{display:flex;align-items:center;gap:18px;width:470px;flex:none;}
+.brand img{width:80px;height:80px;object-fit:contain;flex:none;}
+.brand-txt{line-height:1;min-width:0;}
 .brand-name{
   font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;font-size:52px;letter-spacing:.03em;
+  font-weight:700;font-size:44px;letter-spacing:.03em;
   text-transform:uppercase;color:var(--white);
+  white-space:nowrap;
 }
 .brand-sub{
   font-family:'Barlow',sans-serif;font-weight:600;
-  font-size:20px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--gold);margin-top:8px;
+  font-size:15px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--gold);margin-top:9px;white-space:nowrap;
 }
-
 .headline{flex:1;text-align:center;line-height:1;}
 .headline h1{
   margin:0;
   font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;font-size:62px;letter-spacing:.035em;
+  font-weight:700;font-size:60px;letter-spacing:.035em;
   text-transform:uppercase;color:var(--white);
 }
 .headline .date{
-  margin-top:10px;
+  margin-top:9px;
   font-family:'Barlow Condensed',sans-serif;
-  font-weight:600;font-size:34px;letter-spacing:.16em;
+  font-weight:600;font-size:32px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--gold);
 }
-
-.clockbox{width:430px;flex:none;text-align:right;line-height:1;}
+.clockbox{width:470px;flex:none;text-align:right;line-height:1;}
 .clock{
   font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;font-size:76px;letter-spacing:.02em;
+  font-weight:700;font-size:72px;letter-spacing:.02em;
   color:var(--white);
   font-variant-numeric:tabular-nums;
 }
 .clock .sep{color:var(--gold);}
 .clock .sep.tick{opacity:.25;}
 .updated{
-  margin-top:8px;
-  font-size:19px;font-weight:500;letter-spacing:.1em;
+  margin-top:7px;
+  font-size:18px;font-weight:500;letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);
 }
 
-/* ============ MIDDENDEEL ============ */
-.main{
+/* ============ SLIDE-CONTAINER ============ */
+.deck{flex:1;min-height:0;position:relative;}
+.slide{
+  position:absolute;inset:0;
+  opacity:0;visibility:hidden;
+  transition:opacity .7s ease;
+  display:flex;flex-direction:column;
+}
+.slide.active{opacity:1;visibility:visible;}
+
+/* ============ SLIDE 1 — combi-overzicht ============ */
+.combi{
   flex:1;min-height:0;
-  display:flex;gap:30px;
-  padding:28px 46px 0;
+  display:flex;gap:26px;
+  padding:22px 46px 0;
+}
+.panel{
+  display:flex;flex-direction:column;min-width:0;min-height:0;
+  background:rgba(9,19,48,.55);
+  border:2px solid rgba(245,195,59,.24);
+  border-radius:9px;
+  padding:16px 20px 12px;
+}
+.panel-velden{flex:1.26;}
+.panel-hal{flex:1;}
+.panel-head{
+  flex:none;display:flex;align-items:baseline;gap:14px;
+  padding:0 4px 12px;
+  border-bottom:3px solid rgba(245,195,59,.45);
+  margin-bottom:12px;
+}
+.panel-head h2{
+  margin:0;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:38px;line-height:1;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--gold);
+}
+.panel-head .sub{
+  font-family:'Barlow',sans-serif;font-weight:600;
+  font-size:18px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);
 }
 
-/* ---------- 2. HOOFDTABEL ---------- */
-.tablewrap{flex:1;min-width:0;display:flex;flex-direction:column;}
+/* -- voetbaltabel -- */
 .row{
   display:grid;
-  grid-template-columns:150px 1fr 196px 196px 196px;
+  grid-template-columns:104px 1fr 138px 104px 104px;
   align-items:center;
-  column-gap:16px;
+  column-gap:12px;
 }
 .thead{
   flex:none;
-  padding:0 18px 14px;
+  padding:0 12px 10px;
   align-items:end;
   font-family:'Barlow Condensed',sans-serif;
-  font-weight:600;font-size:26px;letter-spacing:.13em;
-  line-height:1.06;
-  text-transform:uppercase;color:var(--gold);
+  font-weight:600;font-size:23px;letter-spacing:.11em;
+  line-height:1.05;
+  text-transform:uppercase;color:var(--gold-soft);
 }
 .thead .c{text-align:center;}
 .thead .c:nth-child(2){text-align:left;}
-
-.tbody{flex:1;min-height:0;display:flex;flex-direction:column;gap:9px;}
+.tbody{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;}
 .tbody .row{
   flex:1;
-  padding:0 18px;
+  padding:0 12px;
   background:rgba(255,255,255,.075);
-  border-left:9px solid var(--gold);
+  border-left:8px solid var(--gold);
   border-radius:6px;
 }
 .tbody .row.uit{
@@ -151,113 +196,311 @@ img{display:block;}
   border-left-color:#41548c;
   opacity:.72;
 }
-
 .tijd{
   font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;font-size:52px;line-height:1;
+  font-weight:700;font-size:44px;line-height:1;
   color:var(--white);text-align:center;
   font-variant-numeric:tabular-nums;
 }
 .wedstrijd{
-  font-size:33px;line-height:1.15;font-weight:500;
+  font-size:28px;line-height:1.14;font-weight:500;
   color:#dbe3f5;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .wedstrijd b{font-weight:700;color:var(--white);}
-.wedstrijd .vs{color:var(--gold);font-weight:600;padding:0 6px;}
-.cel{text-align:center;font-size:33px;font-weight:600;color:#dbe3f5;}
-
+.wedstrijd .vs{color:var(--gold);font-weight:600;padding:0 5px;}
+.cel{text-align:center;font-size:30px;font-weight:600;color:#dbe3f5;}
 .veld{
   display:inline-block;
-  min-width:146px;padding:9px 14px;
+  min-width:126px;padding:8px 10px;
   background:var(--gold);color:#12224f;
   font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;font-size:34px;line-height:1;
-  letter-spacing:.05em;text-transform:uppercase;
+  font-weight:700;font-size:30px;line-height:1;
+  letter-spacing:.04em;text-transform:uppercase;
   border-radius:5px;
 }
 .uitlabel{
   display:inline-block;
-  min-width:110px;padding:8px 16px;
+  min-width:104px;padding:7px 10px;
   border:2px solid #6d80b8;color:#c3cee9;
   font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;font-size:27px;line-height:1;
-  letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;font-size:24px;line-height:1;
+  letter-spacing:.18em;text-transform:uppercase;
   border-radius:5px;
 }
-.leeg{color:#7f8fbb;font-size:34px;font-weight:600;}
-
+.leeg{color:#7f8fbb;font-size:30px;font-weight:600;}
 .tblfoot{
-  flex:none;padding:11px 18px 0;
-  font-size:16px;letter-spacing:.16em;text-transform:uppercase;
+  flex:none;padding:9px 12px 0;
+  font-size:15px;letter-spacing:.16em;text-transform:uppercase;
   color:rgba(169,182,214,.55);
 }
 
-/* ---------- 3. RECHTERKOLOM ---------- */
-.side{width:478px;flex:none;display:flex;flex-direction:column;gap:24px;}
-.card{
-  background:rgba(9,19,48,.72);
-  border:2px solid rgba(245,195,59,.28);
-  border-radius:8px;
-  padding:24px 26px;
+/* -- sporthaltabel (volleybal + basketbal door elkaar) -- */
+.hrow{
+  display:grid;
+  grid-template-columns:44px 92px 1fr 96px;
+  align-items:center;
+  column-gap:10px;
 }
-.card h2{
-  margin:0 0 18px;
+.hthead{
+  flex:none;padding:0 12px 10px;
   font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;font-size:34px;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--gold);
-  line-height:1.05;
+  font-weight:600;font-size:23px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--gold-soft);
 }
-.infolist{list-style:none;margin:0;padding:0;}
-.infolist li{
-  display:flex;align-items:flex-start;gap:14px;
-  font-size:27px;line-height:1.28;font-weight:500;color:#e2e8f7;
-  padding:13px 0;
-  border-top:1px solid rgba(255,255,255,.11);
+.hthead .c{text-align:center;}
+.hthead .c:nth-child(3){text-align:left;}
+.hbody{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;}
+.hbody .hrow{
+  flex:1;padding:0 12px;
+  background:rgba(255,255,255,.075);
+  border-left:8px solid var(--bb);
+  border-radius:6px;
 }
-.infolist li:first-child{border-top:0;padding-top:2px;}
-.infolist li:last-child{padding-bottom:2px;}
-.ico{
-  flex:none;width:34px;text-align:center;
-  font-size:26px;color:var(--gold);line-height:1.35;
+.hbody .hrow.vb{border-left-color:#3d8ee0;}
+.sporticon{width:40px;height:40px;justify-self:center;}
+.hteam{
+  font-size:26px;line-height:1.16;font-weight:500;color:#dbe3f5;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.infolist b{font-weight:700;color:#fff;}
+.hteam b{font-weight:700;color:var(--white);}
+.hteam .vs{color:var(--gold);font-weight:600;padding:0 5px;}
+.kk{
+  text-align:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:29px;letter-spacing:.02em;
+  color:#e2e8f7;white-space:nowrap;
+}
 
-.sponsors{flex:1;display:flex;flex-direction:column;}
-.sponsorgrid{
-  flex:1;
-  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
-  gap:16px;
+/* -- sponsorstrook -- */
+.sponsorstrip{
+  flex:none;height:100px;
+  margin:16px 46px 14px;
+  display:flex;align-items:center;gap:18px;
+  padding:0 20px;
+  background:rgba(9,19,48,.6);
+  border:2px solid rgba(245,195,59,.22);
+  border-radius:9px;
 }
+.sponsorstrip .lbl{
+  flex:none;width:200px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;font-size:21px;line-height:1.1;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);
+}
+.sponsorgrid{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;height:72px;}
 .tile{
-  background:#fff;border-radius:7px;
+  background:#fff;border-radius:6px;
   display:flex;align-items:center;justify-content:center;
-  padding:12px 14px;
+  padding:6px 12px;overflow:hidden;
   border:3px solid transparent;
-  transition:border-color .5s ease, box-shadow .5s ease, transform .5s ease;
+  transition:border-color .5s ease, box-shadow .5s ease;
 }
-.tile img{width:100%;max-height:100%;object-fit:contain;}
+.tile img{width:100%;height:100%;object-fit:contain;}
 .tile.on{
   border-color:var(--gold);
-  box-shadow:0 0 0 5px rgba(245,195,59,.22);
-  transform:scale(1.035);
+  box-shadow:0 0 0 4px rgba(245,195,59,.22);
 }
 
-/* ============ 4. VOETREGEL ============ */
+/* ============ SLIDE 2 — VOLLEYBAL PEIZE ============ */
+.club{flex:1;min-height:0;display:flex;flex-direction:column;padding:26px 46px 10px;}
+#slide2{background:linear-gradient(150deg,#1e6fd0 0%,var(--vb) 42%,var(--vb-deep) 100%);}
+#slide3{background:linear-gradient(150deg,#2b2b2b 0%,var(--bb-dark) 45%,var(--bb-deep) 100%);}
+
+.clubhead{
+  flex:none;display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:16px;margin-bottom:20px;
+  border-bottom:4px solid rgba(255,255,255,.32);
+}
+.wordmark{line-height:1;}
+.wordmark .wm1{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:76px;letter-spacing:.05em;
+  text-transform:uppercase;color:#fff;
+}
+.wordmark .wm2{
+  margin-top:10px;
+  font-family:'Barlow',sans-serif;font-weight:600;
+  font-size:23px;letter-spacing:.32em;text-transform:uppercase;
+}
+.badge{
+  flex:none;display:flex;align-items:center;gap:18px;
+  padding:14px 26px;border-radius:9px;
+  background:rgba(255,255,255,.14);
+  border:2px solid rgba(255,255,255,.3);
+}
+.badge svg{width:56px;height:56px;}
+.badge span{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:32px;letter-spacing:.14em;
+  text-transform:uppercase;color:#fff;line-height:1;
+}
+
+.clubbody{flex:1;min-height:0;display:flex;gap:28px;}
+.col-prog{flex:1.18;min-width:0;display:flex;flex-direction:column;}
+.col-side{flex:1;min-width:0;display:flex;flex-direction:column;}
+.blocktitle{
+  flex:none;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:34px;letter-spacing:.13em;
+  text-transform:uppercase;color:#fff;
+  margin-bottom:14px;
+}
+#slide2 .blocktitle{color:#ffffff;}
+#slide2 .wordmark .wm2{color:#ffe27a;}
+#slide3 .wordmark .wm2{color:var(--bb);}
+
+.matchlist{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px;}
+.match{
+  flex:1;
+  display:flex;align-items:center;gap:26px;
+  padding:0 28px;
+  background:rgba(255,255,255,.94);
+  border-radius:10px;
+  border-left:12px solid var(--vb-deep);
+}
+#slide3 .match{border-left-color:var(--bb);}
+.match .mt{
+  flex:none;width:150px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:60px;line-height:1;
+  color:var(--vb-deep);
+  font-variant-numeric:tabular-nums;
+}
+#slide3 .match .mt{color:var(--bb);}
+.match .mm{flex:1;min-width:0;line-height:1.1;}
+.match .mm .home{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:44px;letter-spacing:.01em;
+  color:#12224f;text-transform:uppercase;
+}
+#slide3 .match .mm .home{color:#1a1a1a;}
+.match .mm .away{
+  margin-top:6px;
+  font-size:29px;font-weight:500;color:#4c5670;
+}
+.match .mm .away b{font-weight:700;color:#22293b;}
+.match .mk{
+  flex:none;text-align:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:24px;letter-spacing:.1em;
+  text-transform:uppercase;color:#5b6478;
+}
+.match .mk .kkbig{
+  display:block;margin-top:5px;
+  font-size:36px;letter-spacing:.04em;color:#12224f;
+}
+#slide3 .match .mk .kkbig{color:#1a1a1a;}
+#slide3 .match .mm .away{color:#55585f;}
+#slide3 .match .mm .away b{color:#2a2a2a;}
+#slide3 .match .mk{color:#6a6c73;}
+
+.standbox{
+  flex:1;min-height:0;display:flex;flex-direction:column;
+  background:rgba(255,255,255,.12);
+  border:2px solid rgba(255,255,255,.3);
+  border-radius:10px;
+  padding:20px 22px 16px;
+}
+.standrow{
+  display:grid;grid-template-columns:52px 1fr 74px 84px;
+  align-items:center;column-gap:12px;
+}
+.standhead{
+  flex:none;padding:0 12px 10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;font-size:21px;letter-spacing:.13em;
+  text-transform:uppercase;color:rgba(255,255,255,.78);
+}
+.standhead .c{text-align:center;}
+.standhead .c:nth-child(2){text-align:left;}
+.standbody{flex:1;min-height:0;display:flex;flex-direction:column;gap:7px;}
+.standbody .standrow{
+  flex:1;padding:0 12px;border-radius:6px;
+  background:rgba(255,255,255,.1);
+  font-size:28px;font-weight:500;color:#eaf2ff;
+}
+.standbody .standrow.me{
+  background:#fff;color:#0b3f81;font-weight:700;
+  box-shadow:0 0 0 3px #ffe27a;
+}
+.standrow .pos{
+  text-align:center;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;
+}
+.standrow .gp,.standrow .pt{text-align:center;font-variant-numeric:tabular-nums;}
+.standrow .pt{font-weight:700;font-size:31px;}
+
+.trainbox{
+  flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;
+  gap:18px;
+  background:rgba(255,255,255,.1);
+  border:2px solid rgba(232,100,27,.6);
+  border-radius:10px;
+  padding:26px 32px;
+}
+.trainbox .big{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:54px;line-height:1.02;
+  letter-spacing:.03em;text-transform:uppercase;color:var(--bb);
+}
+.trainbox .lead{font-size:31px;line-height:1.3;font-weight:600;color:#fff;}
+.trainlist{list-style:none;margin:0;padding:0;}
+.trainlist li{
+  display:flex;gap:16px;align-items:baseline;
+  font-size:27px;line-height:1.25;font-weight:500;color:#e8e8e8;
+  padding:10px 0;border-top:1px solid rgba(255,255,255,.16);
+}
+.trainlist li:first-child{border-top:0;}
+.trainlist .d{
+  flex:none;width:126px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:27px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--bb);
+}
+.trainbox .cta{
+  font-size:25px;font-weight:600;color:#fff;
+  letter-spacing:.04em;
+}
+
+.clubfoot{
+  flex:none;display:flex;justify-content:space-between;
+  padding:12px 4px 0;
+  font-size:17px;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,255,255,.62);
+}
+
+/* ============ VOETREGEL + SLIDE-INDICATOR ============ */
 .footer{
-  flex:none;height:52px;
+  flex:none;height:78px;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 46px;
-  background:rgba(8,17,45,.72);
+  background:rgba(8,17,45,.86);
   border-top:2px solid rgba(245,195,59,.35);
-  font-size:17px;font-weight:500;letter-spacing:.16em;
-  text-transform:uppercase;color:rgba(190,201,228,.8);
+  font-size:16px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(190,201,228,.82);
+  z-index:6;
 }
-.footer .dot{color:var(--gold);padding:0 8px;}
+.footer .dot{color:var(--gold);padding:0 9px;}
 .live{display:flex;align-items:center;gap:11px;}
 .live .blip{
   width:11px;height:11px;border-radius:50%;
   background:#5ddc7a;box-shadow:0 0 10px #5ddc7a;
+}
+.indicator{display:flex;align-items:center;gap:14px;}
+.seg{
+  position:relative;width:96px;height:9px;border-radius:5px;
+  background:rgba(255,255,255,.2);overflow:hidden;
+}
+.seg i{
+  position:absolute;left:0;top:0;bottom:0;width:0;
+  background:var(--gold);border-radius:5px;
+}
+.seg.done i{width:100%;background:rgba(245,195,59,.45);}
+.indicator .lbl{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;font-size:20px;letter-spacing:.18em;
+  color:rgba(190,201,228,.7);
 }
 </style>
 </head>
@@ -265,13 +508,13 @@ img{display:block;}
 
 <div id="stage">
 
-  <!-- ===== 1. topbalk ===== -->
+  <!-- ===== topbalk (persistent) ===== -->
   <header class="topbar">
     <div class="brand">
-      <img src="assets/logo_vvpeize.png" alt="V.V. Peize">
+      <img src="assets/logo_vvpeize.png" alt="Sporthuis Peize">
       <div class="brand-txt">
-        <div class="brand-name">V.V. Peize</div>
-        <div class="brand-sub">Sportpark Peize</div>
+        <div class="brand-name">Sporthuis Peize</div>
+        <div class="brand-sub">Voetbal · Volleybal · Basketbal</div>
       </div>
     </div>
 
@@ -286,96 +529,159 @@ img{display:block;}
     </div>
   </header>
 
-  <!-- ===== middendeel ===== -->
-  <div class="main">
+  <!-- ===== slides ===== -->
+  <div class="deck" id="deck">
 
-    <!-- ===== 2. hoofdtabel ===== -->
-    <section class="tablewrap">
-      <div class="row thead">
-        <div class="c">Tijd</div>
-        <div class="c">Wedstrijd</div>
-        <div class="c">Veld</div>
-        <div class="c">Kleedkamer<br>thuis</div>
-        <div class="c">Kleedkamer<br>uit</div>
+    <!-- ============ SLIDE 1 — combi-overzicht ============ -->
+    <section class="slide active" id="slide1">
+      <div class="combi">
+
+        <!-- velden -->
+        <div class="panel panel-velden">
+          <div class="panel-head">
+            <h2>Velden — V.V. Peize</h2>
+            <span class="sub">Sportpark Peize</span>
+          </div>
+
+          <div class="row thead">
+            <div class="c">Tijd</div>
+            <div class="c">Wedstrijd</div>
+            <div class="c">Veld</div>
+            <div class="c">Kleedk.<br>thuis</div>
+            <div class="c">Kleedk.<br>uit</div>
+          </div>
+
+          <div class="tbody">
+            <div class="row">
+              <div class="tijd">09:00</div>
+              <div class="wedstrijd"><b>Peize JO11-1</b><span class="vs">–</span>Roden JO11-2</div>
+              <div class="cel"><span class="veld">Veld 2</span></div>
+              <div class="cel">K3</div>
+              <div class="cel">K4</div>
+            </div>
+            <div class="row">
+              <div class="tijd">10:15</div>
+              <div class="wedstrijd"><b>Peize JO13-1</b><span class="vs">–</span>GOMOS JO13-1</div>
+              <div class="cel"><span class="veld">Veld 2</span></div>
+              <div class="cel">K3</div>
+              <div class="cel">K4</div>
+            </div>
+            <div class="row">
+              <div class="tijd">10:30</div>
+              <div class="wedstrijd"><b>Peize JO17-1</b><span class="vs">–</span>VAKO JO17-1</div>
+              <div class="cel"><span class="veld">Veld 1</span></div>
+              <div class="cel">K1</div>
+              <div class="cel">K2</div>
+            </div>
+            <div class="row uit">
+              <div class="tijd">12:00</div>
+              <div class="wedstrijd">Westerkwartier 3<span class="vs">–</span><b>Peize 4</b></div>
+              <div class="cel"><span class="uitlabel">Uit</span></div>
+              <div class="cel"><span class="leeg">–</span></div>
+              <div class="cel"><span class="leeg">–</span></div>
+            </div>
+            <div class="row">
+              <div class="tijd">12:30</div>
+              <div class="wedstrijd"><b>Peize 3</b><span class="vs">–</span>Roden 3</div>
+              <div class="cel"><span class="veld">Veld 2</span></div>
+              <div class="cel">K3</div>
+              <div class="cel">K4</div>
+            </div>
+            <div class="row">
+              <div class="tijd">14:30</div>
+              <div class="wedstrijd"><b>Peize 2</b><span class="vs">–</span>Marum 4</div>
+              <div class="cel"><span class="veld">Veld 1</span></div>
+              <div class="cel">K1</div>
+              <div class="cel">K2</div>
+            </div>
+          </div>
+
+          <div class="tblfoot">Voorbeelddata · bron Sportlink</div>
+        </div>
+
+        <!-- sporthal -->
+        <div class="panel panel-hal">
+          <div class="panel-head">
+            <h2>Sporthal</h2>
+            <span class="sub">Volleybal &amp; basketbal</span>
+          </div>
+
+          <div class="hrow hthead">
+            <div class="c"></div>
+            <div class="c">Tijd</div>
+            <div class="c">Wedstrijd</div>
+            <div class="c">Kleedk.</div>
+          </div>
+
+          <div class="hbody">
+
+            <div class="hrow">
+              <svg class="sporticon" viewBox="0 0 48 48" aria-label="Basketbal">
+                <circle cx="24" cy="24" r="21" fill="none" stroke="#E8641B" stroke-width="3.4"/>
+                <path d="M24 3v42M3 24h42" fill="none" stroke="#E8641B" stroke-width="3"/>
+                <path d="M9 9c9 8 9 22 0 30M39 9c-9 8-9 22 0 30" fill="none" stroke="#E8641B" stroke-width="3"/>
+              </svg>
+              <div class="tijd" style="font-size:38px">10:00</div>
+              <div class="hteam"><b>Jumping Five U12</b><span class="vs">–</span>Arrows U12</div>
+              <div class="kk">K5/K6</div>
+            </div>
+
+            <div class="hrow">
+              <svg class="sporticon" viewBox="0 0 48 48" aria-label="Basketbal">
+                <circle cx="24" cy="24" r="21" fill="none" stroke="#E8641B" stroke-width="3.4"/>
+                <path d="M24 3v42M3 24h42" fill="none" stroke="#E8641B" stroke-width="3"/>
+                <path d="M9 9c9 8 9 22 0 30M39 9c-9 8-9 22 0 30" fill="none" stroke="#E8641B" stroke-width="3"/>
+              </svg>
+              <div class="tijd" style="font-size:38px">12:00</div>
+              <div class="hteam"><b>Jumping Five U16</b><span class="vs">–</span>HSVB U16</div>
+              <div class="kk">K5/K6</div>
+            </div>
+
+            <div class="hrow">
+              <svg class="sporticon" viewBox="0 0 48 48" aria-label="Basketbal">
+                <circle cx="24" cy="24" r="21" fill="none" stroke="#E8641B" stroke-width="3.4"/>
+                <path d="M24 3v42M3 24h42" fill="none" stroke="#E8641B" stroke-width="3"/>
+                <path d="M9 9c9 8 9 22 0 30M39 9c-9 8-9 22 0 30" fill="none" stroke="#E8641B" stroke-width="3"/>
+              </svg>
+              <div class="tijd" style="font-size:38px">14:00</div>
+              <div class="hteam"><b>Jumping Five H1</b><span class="vs">–</span>BV Leeuwarden 2</div>
+              <div class="kk">K5/K6</div>
+            </div>
+
+            <div class="hrow vb">
+              <svg class="sporticon" viewBox="0 0 48 48" aria-label="Volleybal">
+                <circle cx="24" cy="24" r="21" fill="none" stroke="#5aa6ee" stroke-width="3.4"/>
+                <path d="M24 3c-8 10-9 27-3 42" fill="none" stroke="#5aa6ee" stroke-width="3"/>
+                <path d="M44 17c-13-2-27 5-35 18" fill="none" stroke="#5aa6ee" stroke-width="3"/>
+                <path d="M6 10c5 12 19 20 33 20" fill="none" stroke="#5aa6ee" stroke-width="3"/>
+              </svg>
+              <div class="tijd" style="font-size:38px">15:30</div>
+              <div class="hteam"><b>Peize Dames 1</b><span class="vs">–</span>Sudosa-Desto DS 4</div>
+              <div class="kk">K7/K8</div>
+            </div>
+
+            <div class="hrow vb">
+              <svg class="sporticon" viewBox="0 0 48 48" aria-label="Volleybal">
+                <circle cx="24" cy="24" r="21" fill="none" stroke="#5aa6ee" stroke-width="3.4"/>
+                <path d="M24 3c-8 10-9 27-3 42" fill="none" stroke="#5aa6ee" stroke-width="3"/>
+                <path d="M44 17c-13-2-27 5-35 18" fill="none" stroke="#5aa6ee" stroke-width="3"/>
+                <path d="M6 10c5 12 19 20 33 20" fill="none" stroke="#5aa6ee" stroke-width="3"/>
+              </svg>
+              <div class="tijd" style="font-size:38px">17:00</div>
+              <div class="hteam"><b>Peize Heren 1</b><span class="vs">–</span>Veracles HS 2</div>
+              <div class="kk">K7/K8</div>
+            </div>
+
+          </div>
+
+          <div class="tblfoot">Voorbeelddata</div>
+        </div>
+
       </div>
 
-      <div class="tbody">
-
-        <div class="row">
-          <div class="tijd">09:00</div>
-          <div class="wedstrijd"><b>Peize JO11-1</b><span class="vs">–</span>Roden JO11-2</div>
-          <div class="cel"><span class="veld">Veld 2</span></div>
-          <div class="cel">K3</div>
-          <div class="cel">K4</div>
-        </div>
-
-        <div class="row">
-          <div class="tijd">10:15</div>
-          <div class="wedstrijd"><b>Peize JO13-1</b><span class="vs">–</span>GOMOS JO13-1</div>
-          <div class="cel"><span class="veld">Veld 2</span></div>
-          <div class="cel">K3</div>
-          <div class="cel">K4</div>
-        </div>
-
-        <div class="row">
-          <div class="tijd">10:30</div>
-          <div class="wedstrijd"><b>Peize JO17-1</b><span class="vs">–</span>VAKO JO17-1</div>
-          <div class="cel"><span class="veld">Veld 1</span></div>
-          <div class="cel">K1</div>
-          <div class="cel">K2</div>
-        </div>
-
-        <div class="row uit">
-          <div class="tijd">12:00</div>
-          <div class="wedstrijd">V.V. Westerkwartier 3<span class="vs">–</span><b>Peize 4</b></div>
-          <div class="cel"><span class="uitlabel">Uit</span></div>
-          <div class="cel"><span class="leeg">–</span></div>
-          <div class="cel"><span class="leeg">–</span></div>
-        </div>
-
-        <div class="row">
-          <div class="tijd">12:30</div>
-          <div class="wedstrijd"><b>Peize 3</b><span class="vs">–</span>Roden 3</div>
-          <div class="cel"><span class="veld">Veld 2</span></div>
-          <div class="cel">K3</div>
-          <div class="cel">K4</div>
-        </div>
-
-        <div class="row">
-          <div class="tijd">14:30</div>
-          <div class="wedstrijd"><b>Peize 2</b><span class="vs">–</span>Marum 4</div>
-          <div class="cel"><span class="veld">Veld 1</span></div>
-          <div class="cel">K1</div>
-          <div class="cel">K2</div>
-        </div>
-
-        <div class="row uit">
-          <div class="tijd">14:30</div>
-          <div class="wedstrijd">Blue Boys VR1<span class="vs">–</span><b>Peize VR1</b></div>
-          <div class="cel"><span class="uitlabel">Uit</span></div>
-          <div class="cel"><span class="leeg">–</span></div>
-          <div class="cel"><span class="leeg">–</span></div>
-        </div>
-
-      </div>
-
-      <div class="tblfoot">Voorbeelddata</div>
-    </section>
-
-    <!-- ===== 3. rechterkolom ===== -->
-    <aside class="side">
-
-      <div class="card">
-        <h2>Vandaag op Sportpark Peize</h2>
-        <ul class="infolist">
-          <li><span class="ico">☕</span><span>Kantine open vanaf <b>08:30</b></span></li>
-          <li><span class="ico">✓</span><span><b>Geen afgelastingen</b> — alle velden bespeelbaar</span></li>
-          <li><span class="ico">★</span><span><b>Peize 2 – Marum 4</b><br>hoofdveld, 14:30</span></li>
-        </ul>
-      </div>
-
-      <div class="card sponsors">
-        <h2>Mede mogelijk gemaakt door onze sponsors</h2>
+      <!-- sponsorstrook -->
+      <div class="sponsorstrip">
+        <div class="lbl">Mede mogelijk<br>gemaakt door</div>
         <div class="sponsorgrid" id="sponsorgrid">
           <div class="tile on"><img src="assets/sponsor_unipe.png" alt="Unipe"></div>
           <div class="tile"><img src="assets/sponsor_plus.png" alt="Plus"></div>
@@ -383,14 +689,167 @@ img{display:block;}
           <div class="tile"><img src="assets/sponsor_boon.png" alt="Boon"></div>
         </div>
       </div>
+    </section>
 
-    </aside>
+    <!-- ============ SLIDE 2 — VOLLEYBAL PEIZE ============ -->
+    <section class="slide" id="slide2">
+      <div class="club">
+
+        <div class="clubhead">
+          <div class="wordmark">
+            <div class="wm1">Volleybal Peize</div>
+            <div class="wm2">Sinds 1961 · Sporthuis Peize</div>
+          </div>
+          <div class="badge">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <circle cx="24" cy="24" r="21" fill="none" stroke="#fff" stroke-width="3.4"/>
+              <path d="M24 3c-8 10-9 27-3 42" fill="none" stroke="#fff" stroke-width="3"/>
+              <path d="M44 17c-13-2-27 5-35 18" fill="none" stroke="#fff" stroke-width="3"/>
+              <path d="M6 10c5 12 19 20 33 20" fill="none" stroke="#fff" stroke-width="3"/>
+            </svg>
+            <span>Vandaag in de hal</span>
+          </div>
+        </div>
+
+        <div class="clubbody">
+
+          <div class="col-prog">
+            <div class="blocktitle">Programma vandaag</div>
+            <div class="matchlist">
+              <div class="match">
+                <div class="mt">15:30</div>
+                <div class="mm">
+                  <div class="home">Peize Dames 1</div>
+                  <div class="away">tegen <b>Sudosa-Desto DS 4</b> · 3e klasse D</div>
+                </div>
+                <div class="mk">Kleedkamer<span class="kkbig">K7/K8</span></div>
+              </div>
+              <div class="match">
+                <div class="mt">17:00</div>
+                <div class="mm">
+                  <div class="home">Peize Heren 1</div>
+                  <div class="away">tegen <b>Veracles HS 2</b> · 2e klasse A</div>
+                </div>
+                <div class="mk">Kleedkamer<span class="kkbig">K7/K8</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-side">
+            <div class="blocktitle">Stand — Dames 1</div>
+            <div class="standbox">
+              <div class="standrow standhead">
+                <div class="c">#</div>
+                <div class="c">Team</div>
+                <div class="c">G</div>
+                <div class="c">Ptn</div>
+              </div>
+              <div class="standbody">
+                <div class="standrow"><div class="pos">1</div><div>Sudosa-Desto DS 4</div><div class="gp">8</div><div class="pt">21</div></div>
+                <div class="standrow me"><div class="pos">2</div><div>Peize DS 1</div><div class="gp">8</div><div class="pt">19</div></div>
+                <div class="standrow"><div class="pos">3</div><div>Veracles DS 2</div><div class="gp">8</div><div class="pt">15</div></div>
+                <div class="standrow"><div class="pos">4</div><div>Donitas DS 3</div><div class="gp">8</div><div class="pt">11</div></div>
+                <div class="standrow"><div class="pos">5</div><div>VC Roden DS 1</div><div class="gp">8</div><div class="pt">7</div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="clubfoot">
+          <div>Data: Nevobo / volleybal.nl</div>
+          <div>Voorbeelddata</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 3 — JUMPING FIVE ============ -->
+    <section class="slide" id="slide3">
+      <div class="club">
+
+        <div class="clubhead">
+          <div class="wordmark">
+            <div class="wm1">Jumping Five</div>
+            <div class="wm2">Basketbal Peize · Sporthuis Peize</div>
+          </div>
+          <div class="badge">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <circle cx="24" cy="24" r="21" fill="none" stroke="#E8641B" stroke-width="3.4"/>
+              <path d="M24 3v42M3 24h42" fill="none" stroke="#E8641B" stroke-width="3"/>
+              <path d="M9 9c9 8 9 22 0 30M39 9c-9 8-9 22 0 30" fill="none" stroke="#E8641B" stroke-width="3"/>
+            </svg>
+            <span>Vandaag in de hal</span>
+          </div>
+        </div>
+
+        <div class="clubbody">
+
+          <div class="col-prog">
+            <div class="blocktitle">Programma vandaag</div>
+            <div class="matchlist">
+              <div class="match">
+                <div class="mt">10:00</div>
+                <div class="mm">
+                  <div class="home">Jumping Five U12</div>
+                  <div class="away">tegen <b>Arrows U12</b></div>
+                </div>
+                <div class="mk">Kleedkamer<span class="kkbig">K5/K6</span></div>
+              </div>
+              <div class="match">
+                <div class="mt">12:00</div>
+                <div class="mm">
+                  <div class="home">Jumping Five U16</div>
+                  <div class="away">tegen <b>HSVB U16</b></div>
+                </div>
+                <div class="mk">Kleedkamer<span class="kkbig">K5/K6</span></div>
+              </div>
+              <div class="match">
+                <div class="mt">14:00</div>
+                <div class="mm">
+                  <div class="home">Jumping Five Heren 1</div>
+                  <div class="away">tegen <b>BV Leeuwarden 2</b></div>
+                </div>
+                <div class="mk">Kleedkamer<span class="kkbig">K5/K6</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-side">
+            <div class="blocktitle">Nieuwe leden welkom</div>
+            <div class="trainbox">
+              <div class="big">Kom eens<br>meetrainen!</div>
+              <div class="lead">Dinsdag &amp; donderdag in het Sporthuis</div>
+              <ul class="trainlist">
+                <li><span class="d">Dinsdag</span><span>Jeugd U12 t/m U16 · 18:00 – 19:30</span></li>
+                <li><span class="d">Donderdag</span><span>Senioren &amp; heren 1 · 19:30 – 21:00</span></li>
+              </ul>
+              <div class="cta">Eerste drie trainingen gratis · jumpingfive.nl</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="clubfoot">
+          <div>Data: Basketball Nederland / Sportlink</div>
+          <div>Voorbeelddata</div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
-  <!-- ===== 4. voetregel ===== -->
+  <!-- ===== voetregel ===== -->
   <footer class="footer">
-    <div>Automatisch bijgewerkt vanuit Sportlink<span class="dot">·</span>vvpeize.nl</div>
-    <div class="live"><span class="blip"></span> Club.Dataservice</div>
+    <div>Automatisch bijgewerkt<span class="dot">·</span>vvpeize.nl<span class="dot">·</span>volleybalpeize.nl<span class="dot">·</span>jumpingfive.nl</div>
+
+    <div class="indicator" id="indicator">
+      <span class="lbl" id="indlabel">Overzicht</span>
+      <span class="seg" data-i="0"><i></i></span>
+      <span class="seg" data-i="1"><i></i></span>
+      <span class="seg" data-i="2"><i></i></span>
+    </div>
+
+    <div class="live"><span class="blip"></span> Sportlink · Nevobo</div>
   </footer>
 
 </div>
@@ -429,6 +888,54 @@ img{display:block;}
     i = (i + 1) % tiles.length;
     tiles[i].classList.add('on');
   }, 5000);
+})();
+
+/* ---- 4. slide-rotatie 20 / 10 / 10 sec, met voortgang in de indicator ---- */
+(function(){
+  var SLIDES = [
+    {el:'slide1', ms:20000, label:'Overzicht'},
+    {el:'slide2', ms:10000, label:'Volleybal Peize'},
+    {el:'slide3', ms:10000, label:'Jumping Five'}
+  ];
+  var segs   = [].slice.call(document.querySelectorAll('#indicator .seg'));
+  var fills  = segs.map(function(s){ return s.querySelector('i'); });
+  var label  = document.getElementById('indlabel');
+  var nodes  = SLIDES.map(function(s){ return document.getElementById(s.el); });
+
+  /* ?slide=1|2|3 → één slide vastzetten (screenshots / debug) */
+  var m = /[?&]slide=([123])/.exec(window.location.search);
+  var pinned = m ? (parseInt(m[1],10) - 1) : null;
+
+  function paint(idx, pct){
+    nodes.forEach(function(n,i){ n.classList.toggle('active', i === idx); });
+    label.textContent = SLIDES[idx].label;
+    segs.forEach(function(s,i){
+      s.classList.toggle('done', i < idx);
+      fills[i].style.width = i < idx ? '100%' : (i === idx ? (pct*100).toFixed(1)+'%' : '0%');
+    });
+  }
+
+  if (pinned !== null){
+    paint(pinned, 1);
+    return;
+  }
+
+  /* setInterval i.p.v. requestAnimationFrame: rAF wordt door veel
+     kiosk-/narrowcastingbrowsers geknepen als het venster niet actief is. */
+  var idx = 0, start = Date.now();
+  paint(0, 0);
+
+  setInterval(function(){
+    var now = Date.now();
+    var pct = (now - start) / SLIDES[idx].ms;
+    if (pct >= 1){
+      idx = (idx + 1) % SLIDES.length;
+      start = now;
+      paint(idx, 0);
+    } else {
+      fills[idx].style.width = (pct*100).toFixed(1) + '%';
+    }
+  }, 100);
 })();
 </script>
 </body>
